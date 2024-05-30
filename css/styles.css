@@ -1,0 +1,15 @@
+@import url("reset.css");
+
+:root {
+    --primary-bg: black/* rgb(15, 15, 15) */;
+    --primary-text: #fff;
+    --secondary-text: #c0c0c0;
+    --border: #676767;
+    --shadow: 0 0 5px var(--border);
+}
+
+body {
+    background-color: var(--primary-bg);
+    color: var(--primary-text);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
