@@ -102,14 +102,20 @@ const config = {
             opacity: '1'
           }
         },
+        slide: {
+          to: {
+            transform: "translateX(0%)"
+          }
+        }
  
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        typewriter: 'typewriter 2s steps(17) forwards 1s',
-        caret: 'typewriter 2s steps(17) forwards 1s, blink 1s steps(17) infinite 3s',
+        typewriter: 'typewriter 2s steps(17) forwards 2s',
+        caret: 'typewriter 2s steps(17) forwards 2s, blink 1s steps(17) infinite 4s',
         "fade-in": "fade 0.5s ease-out",
+        slide: "slide 0.75s ease-out forwards"
       },
     },
   },
