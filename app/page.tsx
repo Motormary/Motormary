@@ -8,7 +8,7 @@ import sidebar from "../public/side4.png"
 export default function Home() {
 
   return (
-    <main className="relative grid min-[1650px]:grid-cols-5 items-center justify-center max-[1650px]:h-screen max-[1650px]:px-2 animate-fade-in">
+    <main className="relative grid min-[1650px]:grid-cols-5 items-center justify-center max-[1650px]:h-svh max-[1650px]:px-2 animate-fade-in">
       <div className="absolute top-3 right-3">
         <ModeToggle/>
       </div>
@@ -16,7 +16,7 @@ export default function Home() {
         <Image src={sidebar} alt="banner" width={1500} height={1500} priority />
       </div>
       <div className="flex w-full flex-col items-center justify-center min-[1650px]:col-span-3">
-        <h1 className="max-md:text-4xl md:text-7xl text-primary font-bold whitespace-nowrap">
+        <h1 className="max-md:text-4xl md:text-7xl text-gradient font-bold whitespace-nowrap">
           Mathias K. Moen
         </h1>
         <div className="flex gap-1 mt-2">
