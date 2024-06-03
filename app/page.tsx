@@ -13,7 +13,7 @@ export default function Home() {
         <ModeToggle/>
       </div>
       <div className="m-auto min-[1650px]:col-span-2 max-[1650px]:max-h-96 max-[1650px]:max-w-96 max-[1650px]:rounded-full overflow-hidden">
-        <Image src={sidebar} alt="banner" width={1500} height={1500} priority />
+        <Image src={sidebar} alt="banner" width={1500} height={1500} priority className="transform transition-transform duration-500 translate-x-2/5" />
       </div>
       <div className="flex w-full flex-col items-center justify-center min-[1650px]:col-span-3">
         <h1 className="max-md:text-4xl md:text-7xl text-gradient font-bold whitespace-nowrap">
