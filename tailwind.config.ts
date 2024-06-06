@@ -23,6 +23,9 @@ const config = {
       fontFamily: {
         sans: ["var(--font-sans)", ...fontFamily.sans],
       },
+      backgroundImage: {
+        museum: "url('/museum.png')",
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -104,7 +107,7 @@ const config = {
         },
         slide: {
           to: {
-            transform: "translateX(0%)"
+            transform: "translateX(-100%)"
           }
         },
         up: {

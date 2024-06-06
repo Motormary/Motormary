@@ -1,5 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
-
 import { ModeToggle } from "@/components/ui/toggle-mode"
 import Image from "next/image"
 import Link from "next/link"
@@ -7,7 +5,7 @@ import sidebar from "../public/side4.png"
 
 export default function Home() {
   return (
-    <main className="relative grid min-[1650px]:grid-cols-5 items-center justify-center max-[1650px]:h-svh max-[1650px]:px-2 max-w-[2560px] m-auto">
+    <main className="relative grid min-[1650px]:grid-cols-5 items-center justify-center max-[1650px]:min-h-svh max-[1650px]:px-2 max-w-[2560px] m-auto">
       {/* dark/light mode */}
       <div className="absolute top-3 right-3">
         <ModeToggle />
