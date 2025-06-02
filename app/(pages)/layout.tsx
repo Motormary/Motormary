@@ -1,14 +1,14 @@
-import Footer from "@/components/ui/footer"
-import TopNav from "@/components/ui/topNav"
+import Footer from '@/components/ui/footer'
+import TopNav from '@/components/ui/topNav'
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="relative min-h-svh border py-12">
+    <div>
       <header>
         <TopNav />
       </header>
-      <main className="container my-10">{children}</main>
-        <Footer />
+      <div className="container my-10 max-w-5xl">{children}</div>
+      <Footer />
     </div>
   )
 }

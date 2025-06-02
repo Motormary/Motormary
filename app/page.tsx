@@ -1,35 +1,42 @@
-import { ModeToggle } from "@/components/ui/toggle-mode"
-import Image from "next/image"
-import Link from "next/link"
-import sidebar from "../public/side4.png"
+'use client'
+
+import Moon from '@/components/ui/saturn'
+import Sun from '@/components/ui/smiley'
+import { ModeToggle } from '@/components/ui/toggle-mode'
+import { motion } from 'motion/react'
+import Link from 'next/link'
 
 export default function Home() {
   return (
-    <main className="relative grid min-[1650px]:grid-cols-5 items-center justify-center max-[1650px]:min-h-svh max-[1650px]:px-2 max-w-[2560px] m-auto">
+    <div className="min-h-[calc(100svh-100px)] grid place-items-center">
       {/* dark/light mode */}
       <div className="absolute top-3 right-3">
         <ModeToggle />
       </div>
-      {/* side banner */}
-      <div className="relative m-auto min-[1650px]:col-span-2 max-[1650px]:max-h-96 max-[1650px]:max-w-96 max-[1650px]:rounded-full overflow-hidden">
-        <div className="absolute animate-up bg-background w-full h-1/2 max-[1650px]:hidden"></div>
-        <div className="absolute animate-down bg-background w-full h-1/2 translate-y-full max-[1650px]:hidden"></div>
-        <Image
-          src={sidebar}
-          alt="banner"
-          width={1500}
-          height={1500}
-          priority
-        />
-      </div>
-      <div className="flex w-full flex-col items-center justify-center min-[1650px]:col-span-3 opacity-0 animate-fade-in">
+      <div className="flex w-full flex-col items-center justify-center opacity-0 animate-fade-in">
+        <motion.div
+          className="mb-12"
+          initial={{ rotate: '-30deg' }}
+          animate={{ rotate: '30deg' }}
+          transition={{
+            duration: 2,
+            delay: 1,
+            repeat: Infinity,
+            repeatType: 'reverse',
+            bounce: '0',
+            stiffness: '0',
+            ease: 'easeInOut',
+          }}>
+          <Sun className="size-32 dark:hidden" />
+          <Moon className="size-32 hidden dark:block" />
+        </motion.div>
         {/* Name */}
-        <h1 className="max-md:text-4xl md:text-7xl text-gradient font-bold whitespace-nowrap z-10">
+        <h1 className="max-md:text-4xl md:text-7xl relative text-gradient dark:text-gradient-moon font-bold whitespace-nowrap z-10">
           Mathias K. Moen
         </h1>
         {/* Occupation with typewriter animation */}
         <div className="flex items-center gap-1 mt-2">
-          <span className="font-semibold text-slate-500">{">"}</span>
+          <span className="font-semibold text-slate-500">{'>'}</span>
           <p
             className="relative w-[max-content] text-xl font-mono
         before:absolute before:inset-0 before:animate-typewriter
@@ -42,12 +49,12 @@ export default function Home() {
         <div className="mt-20 mb-5 z-10">
           {/* Enter link */}
           <Link
-            className="font-mono text-xl border-2 p-2 hover:border-primary active:border-primary transition"
+            className="text-xl border-2 rounded-full py-2 px-4 hover:border-primary active:border-primary transition"
             href="/portfolio">
             Enter
           </Link>
         </div>
       </div>
-    </main>
+    </div>
   )
 }
