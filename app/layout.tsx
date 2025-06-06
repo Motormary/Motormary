@@ -27,7 +27,7 @@ export default function RootLayout({
       </head>
       <body
         className={cn(
-          'min-h-svh bg-background font-sans antialiased overflow-hidden',
+          'min-h-svh h-full bg-background font-sans antialiased',
           fontSans.variable
         )}>
         <ThemeProvider
@@ -35,7 +35,7 @@ export default function RootLayout({
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange>
-          <main className="overflow-y-auto max-h-screen py-12">{children}</main>
+          <main className="h-full my-auto">{children}</main>
         </ThemeProvider>
       </body>
     </html>

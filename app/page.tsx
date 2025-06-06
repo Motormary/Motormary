@@ -8,7 +8,7 @@ import Link from 'next/link'
 
 export default function Home() {
   return (
-    <div className="min-h-[calc(100svh-100px)] grid place-items-center">
+    <div className="min-h-screen grid place-items-center">
       {/* dark/light mode */}
       <div className="absolute top-3 right-3">
         <ModeToggle />

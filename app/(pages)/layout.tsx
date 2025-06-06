@@ -3,11 +3,11 @@ import TopNav from '@/components/ui/topNav'
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <div>
+    <div className='h-full'>
       <header>
         <TopNav />
       </header>
-      <div className="container my-10 max-w-5xl">{children}</div>
+      <div className="container max-w-5xl py-24">{children}</div>
       <Footer />
     </div>
   )
