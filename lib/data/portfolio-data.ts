@@ -6,7 +6,7 @@ export const ebox = {
   created: '12/12/2025',
   href: 'https://semester-project-2-one.vercel.app',
   github: 'https://github.com/motormary/semester-project-2',
-  improvements: 'Set cookies as secure to avoid access through javascript.',
+  improvements: 'Updated security for users authentication data.',
 }
 
 export const holidaze = {
@@ -28,5 +28,7 @@ export const ecom = {
   created: '12/12/2025',
   href: 'https://github.com/motormary/react-ecom-v7',
   github: 'https://github.com/Motormary/react-ecom-v7',
-  improvements: 'Moved hooks from table cells to inside JSX component',
+  improvements: 'Refactored improper hook usage',
 }
+
+export const portfolioData = [ebox, holidaze, ecom]

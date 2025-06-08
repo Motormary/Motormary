@@ -2,7 +2,6 @@
 
 import Moon from '@/components/ui/saturn'
 import Sun from '@/components/ui/smiley'
-import { ModeToggle } from '@/components/ui/toggle-mode'
 import { motion } from 'motion/react'
 import { useTheme } from 'next-themes'
 import Link from 'next/link'
@@ -12,7 +11,10 @@ export default function Home() {
 
   return (
     <div className="min-h-screen grid place-items-center">
-      <div className="flex w-full flex-col items-center justify-center opacity-0 animate-fade-in">
+      <div className="flex w-full flex-col items-center justify-center opacity-0 animate-fade-in relative">
+        <div className="rounded-full translate-x-20 border p-4 relative after:absolute after:content-[''] after:w-[12px] after:h-[12px] after:border-r after:bg-background after:skew-x-12 after:rotate-[95deg] after:border-b after:left-[1px] after:border-border after:bottom-[1px]">
+          <p className="text-xs">Click me!</p>
+        </div>
         <motion.div
           className="mb-12"
           initial={{ rotate: '-30deg' }}
