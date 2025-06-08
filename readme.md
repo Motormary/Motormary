@@ -10,10 +10,6 @@
 
 ###
 
-<p align="left">📚 I'm currently learning: SQL<br><br>🎯 Goals: Learn something new everyday<br><br>🎲 Fun fact: <br>The term "debugging" originates from 1947 and came about when Grace Hopper found an actual moth causing trouble in a computer. She removed the moth and noted she was "debugging" the system.</p>
-
-###
-
 <h2 align="left">Tools</h2>
 
 ###
