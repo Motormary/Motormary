@@ -10,6 +10,12 @@
 
 ###
 
+<p align="left">📚 I'm currently learning: SQL<br><br>🎯 Goals: Learn something new everyday<br><br>🎲</p>
+
+
+
+###
+
 <h2 align="left">Tools</h2>
 
 ###
