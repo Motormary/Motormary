@@ -29,7 +29,7 @@ const data = [
 export default function Portfolio() {
   return (
     <div className="flex flex-col w-full items-center">
-      <h1 className="text-3xl font-bold mb-10">My Work</h1>
+      <h1 className="text-3xl font-bold mb-10">Portfolio</h1>
       <motion.ol
         variants={container}
         viewport={{ once: true }}

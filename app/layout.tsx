@@ -4,6 +4,7 @@ import './globals.css'
 import { cn } from '@/lib/utils'
 import { ThemeProvider } from '@/components/theme-provider'
 import { Metadata } from 'next'
+import { Toaster } from '@/components/ui/sonner'
 
 const fontSans = FontSans({
   subsets: ['latin'],
@@ -36,6 +37,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange>
           <main className="h-full my-auto">{children}</main>
+          <Toaster richColors/>
         </ThemeProvider>
       </body>
     </html>

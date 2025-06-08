@@ -1,8 +1,8 @@
-import dynamic from 'next/dynamic'
+import ShareButton from '@/components/share-button'
 import * as page from '@/lib/data/portfolio-data'
-import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
+import { notFound } from 'next/navigation'
 
 type Props = {
   params: Promise<{ id: string }>
@@ -26,10 +26,11 @@ export default async function Page({ params }: Props) {
           height={500}
           className="rounded-md"
         />
-        <div className='space-x-2 text-sm my-2 [&>a]:underline'>
+        <div className='flex gap-2 text-sm mt-4 [&>a]:underline'>
           <Link target='_blank' href={data.href}>Live</Link>
           <span>|</span>
           <Link target='_blank' href={data.github}>Repo</Link>
+          <ShareButton/>
         </div>
       </div>
       <p className="text-pretty">{data.body}</p>

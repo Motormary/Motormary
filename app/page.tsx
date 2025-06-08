@@ -4,15 +4,14 @@ import Moon from '@/components/ui/saturn'
 import Sun from '@/components/ui/smiley'
 import { ModeToggle } from '@/components/ui/toggle-mode'
 import { motion } from 'motion/react'
+import { useTheme } from 'next-themes'
 import Link from 'next/link'
 
 export default function Home() {
+  const { setTheme } = useTheme()
+
   return (
     <div className="min-h-screen grid place-items-center">
-      {/* dark/light mode */}
-      <div className="absolute top-3 right-3">
-        <ModeToggle />
-      </div>
       <div className="flex w-full flex-col items-center justify-center opacity-0 animate-fade-in">
         <motion.div
           className="mb-12"
@@ -27,8 +26,14 @@ export default function Home() {
             stiffness: '0',
             ease: 'easeInOut',
           }}>
-          <Sun className="size-32 dark:hidden" />
-          <Moon className="size-32 hidden dark:block" />
+          <Sun
+            onClick={() => setTheme('dark')}
+            className="size-32 dark:hidden cursor-pointer"
+          />
+          <Moon
+            onClick={() => setTheme('light')}
+            className="size-32 hidden dark:block cursor-pointer"
+          />
         </motion.div>
         {/* Name */}
         <h1 className="max-md:text-4xl md:text-7xl relative text-gradient dark:text-gradient-moon font-bold whitespace-nowrap z-10">
