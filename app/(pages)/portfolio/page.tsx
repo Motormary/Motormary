@@ -10,6 +10,7 @@ const container = {
     opacity: 1,
     transition: {
       staggerChildren: 0.3,
+      delay: 0.2
     },
   },
 }
