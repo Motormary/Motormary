@@ -32,7 +32,7 @@ export default function Home() {
           )}>
           <p className="text-xs whitespace-nowrap">Click me!</p>
         </div>
-        <div className='bg-background w-full absolute transition-colors h-[500px] top-16 z-0'/>
+        <div className='bg-background w-full absolute h-[500px] top-16 z-0'/>
         <motion.div
           initial={{ rotate: 0 }}
           animate={{ rotate: rotate }}
