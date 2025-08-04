@@ -4,6 +4,18 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
+type pageData = {
+  title: string
+  body: string
+  src: string
+  alt: string
+  created: string
+  href: string
+  github: string
+  improvements: string
+}
+
+
 type Props = {
   params: Promise<{ id: string }>
 }
@@ -11,7 +23,7 @@ type Props = {
 export default async function Page({ params }: Props) {
   const { id } = await params
 
-  const data = page[id as keyof typeof page]
+  const data = page[id as keyof typeof page] as pageData
 
   if (!data) return notFound()
 

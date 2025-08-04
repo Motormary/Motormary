@@ -28,16 +28,12 @@ export default function RootLayout({
       </head>
       <body
         className={cn(
-          'min-h-svh h-full bg-background font-sans antialiased',
+          'min-h-svh h-full bg-background font-sans antialiased transition-colors',
           fontSans.variable
         )}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange>
+        <ThemeProvider attribute="class" defaultTheme="light">
           <main className="h-full my-auto">{children}</main>
-          <Toaster richColors/>
+          <Toaster richColors />
         </ThemeProvider>
       </body>
     </html>
