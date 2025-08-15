@@ -1,5 +1,4 @@
 'use client'
-//121111
 import Moon from '@/components/ui/saturn'
 import Sun from '@/components/ui/smiley'
 import { cn } from '@/lib/utils'
@@ -77,7 +76,7 @@ export default function Home() {
         after:bg-foreground
         after:absolute after:inset-0 after:w-[0.5em] after:h-[1.75ch] after:top-1 after:animate-caret
         before:bg-background">
-            Full-Stack Developer
+            Front-End Developer
           </p>
         </div>
         <div className="mt-20 mb-5 z-10">
