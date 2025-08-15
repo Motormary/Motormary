@@ -85,7 +85,7 @@ export default function Home() {
           <Link
             className="text-xl border-2 rounded-full py-2 px-4 hover:border-primary active:border-primary transition"
             href="/portfolio">
-            Test
+            Enter
           </Link>
         </div>
       </div>
