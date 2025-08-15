@@ -127,7 +127,7 @@ const config = {
         "accordion-up": "accordion-up 0.2s ease-out",
         typewriter: 'typewriter 2s steps(17) forwards 2s',
         caret: 'typewriter 2s steps(17) forwards 2s, blink 1s steps(17) infinite 4s',
-        "fade-in": "fade 1s ease-out forwards 1s",
+        "fade-in": "fade 1s ease-out forwards 0.5s",
         slide: "slide 0.75s ease-out forwards",
         up: "up 0.75s ease-out forwards 0.5s",
         down: "down 0.75s ease-out forwards 0.5s",
