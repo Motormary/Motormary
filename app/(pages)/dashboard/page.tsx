@@ -1,7 +1,3 @@
-type props = {
-  params: string
-}
-
-export default async function DashboardPage({ params }: props) {
+export default async function DashboardPage() {
   return <div>DashboardPage</div>
 }
