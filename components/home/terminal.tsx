@@ -4,7 +4,7 @@ import { Typewriter } from '@/lib/client-utils'
 import React, { useEffect, useRef, useState } from 'react'
 
 const bootText = `Welcome to Skyen
-\nWIP - This page will be updated everyday\n
+\nWIP - This page will be updated everyday
 \nType help to see commands`
 const startText = 'Hello there...'
 
