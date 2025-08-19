@@ -8,6 +8,60 @@
   --font-mono: var(--font-geist-mono);
 }
 
+@theme {
+  --animate-screen-on: screenOn 2s forwards;
+  --animate-fadeIn: fadeIn ease 0.5s 2s forwards;
+  --animate-carret: blink 1s infinite 2s;
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes blink {
+    0% {
+      opacity: 0;
+    }
+    0.1% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 1;
+    }
+    50.1% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @keyframes screenOn {
+    0% {
+      width: 0%;
+      height: 0%;
+    }
+    40% {
+      width: 100%;
+      height: 0%;
+    }
+    70% {
+      width: 100%;
+      height: 100%;
+      padding: 0;
+    }
+    100% {
+      width: 100%;
+      height: 100%;
+      padding: 0.5rem;
+    }
+  }
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
