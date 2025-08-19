@@ -164,7 +164,7 @@ sudo                Gain access to root`,
         className="w-full h-10 bg-slate-500 relative after:content-[''] after:absolute after:h-5 after:w-full after:bg-white/20 after:rounded-b-lg before:content-[''] before:absolute before:h-10 before:w-full before:backdrop-blur-xs before:z-10"
       />
       <div
-        className="opacity-0 animate-fadeIn font-ubuntu text-lg flex flex-col disabled relative p-2 overflow-x-hidden overflow-y-auto h-[calc(100%-40px)]"
+        className="opacity-0 animate-fadeIn font-ubuntu text-lg flex flex-col disabled relative p-2 overflow-x-auto overflow-y-auto h-[calc(100%-40px)]"
         style={{ scrollbarWidth: 'thin' }}
         onClick={() => inputRef?.current?.focus()}
       >
