@@ -101,7 +101,7 @@ sudo                Gain access to root`,
     if (textAreaRef.current) {
       const el = textAreaRef.current
       el.style.height = 'auto'
-      el.style.height = `${el.scrollHeight}px`
+      el.style.minHeight = `${el.scrollHeight}px`
     }
   }, [welcome])
 
@@ -166,6 +166,7 @@ sudo                Gain access to root`,
       <div
         className="opacity-0 animate-fadeIn font-ubuntu text-lg flex flex-col disabled relative p-2 overflow-x-hidden overflow-y-auto h-[calc(100%-40px)]"
         style={{ scrollbarWidth: 'thin' }}
+        onClick={() => inputRef?.current?.focus()}
       >
         <textarea
           ref={textAreaRef}
