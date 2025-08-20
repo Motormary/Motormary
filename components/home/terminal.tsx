@@ -154,6 +154,7 @@ sudo                Gain access to root`,
         top: `50%`,
         left: `50%`,
         transform: `translateY(-50%) translateX(-50%)`,
+        transitionTimingFunction: 'linear',
       }}
       className="animate-screen-on absolute overflow-hidden max-w-[50rem] max-h-[80dvh] sm:max-h-[37.5rem] rounded-lg border-x-2 border-b-2 border-slate-500 shadow-xl bg-black"
     >
