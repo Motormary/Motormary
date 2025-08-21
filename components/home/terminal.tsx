@@ -93,7 +93,7 @@ sudo                Gain access to root`,
       console.log('history', commandHistory)
       if (toggleState >= max) return
       setCommand(commandHistory[toggleState])
-      setToggleState((prev) => toggleState + 1)
+      setToggleState(() => toggleState + 1)
     }
   }
 
@@ -128,18 +128,12 @@ sudo                Gain access to root`,
   function handlePointerMove(event: React.PointerEvent) {
     if (!dragging || !windowRef.current) return
 
-    const boundary = window.document.body.clientWidth
-    const rect = windowRef.current.getBoundingClientRect()
     const newX = event.clientX - offset.x
     const newY = event.clientY - offset.y
 
-    // HANDLE BOUNDARY
-    // if ((rect.left + rect.width + 5) >= boundary) return
-    // else {
     windowRef.current.style.transform = ''
     windowRef.current.style.left = `${newX}px`
     windowRef.current.style.top = `${newY}px`
-    // }
   }
 
   function handlePointerUp(event: React.PointerEvent) {
@@ -147,23 +141,40 @@ sudo                Gain access to root`,
     ;(event.target as HTMLElement).releasePointerCapture(event.pointerId)
   }
 
+  function handleAnimationEnd() {
+    if (!windowRef.current) return
+    const el = windowRef.current
+    el.style.minWidth = '250px'
+    el.style.minHeight = '250px'
+    el.style.resize = 'both'
+    el.classList.remove('animate-appOpen')
+  }
+
   return (
     <div
+      onAnimationEnd={handleAnimationEnd}
       ref={windowRef}
       style={{
+        height: '100%',
+        width: '94%',
         top: `50%`,
         left: `50%`,
         transform: `translateY(-50%) translateX(-50%)`,
-        transitionTimingFunction: 'linear',
       }}
-      className="animate-screen-on absolute overflow-hidden max-w-[50rem] max-h-[80dvh] sm:max-h-[37.5rem] rounded-lg border-x-2 border-b-2 border-slate-500 shadow-xl bg-black"
+      className="animate-appOpen absolute overflow-hidden max-w-[50rem] max-h-[80dvh] sm:max-h-[37.5rem] rounded-lg border-x-2 border-b-2 border-slate-500 shadow-xl bg-black"
     >
       <div
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
         className="w-full h-10 bg-slate-500 relative after:content-[''] after:absolute after:h-5 after:w-full after:bg-white/20 after:rounded-b-lg before:content-[''] before:absolute before:h-10 before:w-full before:backdrop-blur-xs before:z-10"
-      />
+      >
+        <div className="relative h-7 px-4 float-end z-20 flex items-end gap-4 font-mono font-bold">
+          <button className="cursor-pointer rounded-sm size-4 flex items-center justify-center bg-amber-500"></button>
+          <button className="cursor-pointer rounded-sm size-4 flex items-center justify-center bg-orange-600"></button>
+          <button className="cursor-pointer rounded-sm size-4 flex items-center justify-center bg-red-500"></button>
+        </div>
+      </div>
       <div
         className="opacity-0 animate-fadeIn font-ubuntu text-lg flex flex-col disabled relative p-2 overflow-x-auto overflow-y-auto h-[calc(100%-40px)]"
         style={{ scrollbarWidth: 'thin' }}

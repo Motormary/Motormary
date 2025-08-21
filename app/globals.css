@@ -2,8 +2,6 @@
 
 /* TW DOCS: When defining theme variables that reference other variables, use the inline option */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --font-ubuntu: var(--font-ubuntu);
@@ -11,7 +9,8 @@
 }
 
 @theme {
-  --animate-screen-on: screenOn 2s forwards;
+  --animate-appOpen: openApp 2s forwards;
+  --animate-appClose: closeApp 2s forwards;
   --animate-fadeIn: fadeIn ease 0.5s 2s forwards;
   --animate-carret: blink 1s infinite 2s;
 
@@ -42,7 +41,7 @@
     }
   }
 
-  @keyframes screenOn {
+  @keyframes openApp {
     0% {
       width: 0%;
       height: 0%;
@@ -60,9 +59,28 @@
       height: 100%;
     }
   }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
+  @keyframes closeApp {
+    0% {
+      width: 94%;
+      height: 100%;
+      width: 0%;
+      height: 0%;
+    }
+    40% {
+      width: 94%;
+      height: 100%;
+    }
+    70% {
+      width: 94%;
+      height: 0%;
+    }
+    99% {
+      width: 0%;
+      height: 0%;
+    }
+    100% {
+      width: 0%;
+      height: 0%;
+    }
+  }
 }
