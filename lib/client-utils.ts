@@ -1,4 +1,4 @@
-type props = {
+type typewriterProps = {
   setState: (val: string) => void
   text: string
   speed?: number
@@ -8,7 +8,7 @@ export function Typewriter({
   setState,
   text,
   speed = 80,
-}: props): Promise<boolean> | void {
+}: typewriterProps): Promise<boolean> | void {
   return new Promise((resolve) => {
     let cur = ''
     const typing = setInterval(async () => {
