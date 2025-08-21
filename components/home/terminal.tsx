@@ -83,6 +83,7 @@ sudo                Gain access to root`,
       }
       setCommand('')
       setTimeout(() => {
+        setToggleState(0)
         inputRef?.current?.scrollIntoView()
       }, 0)
     }
