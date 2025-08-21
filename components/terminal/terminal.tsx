@@ -14,8 +14,8 @@ type Terminal = {
 }
 
 export default function Terminal({ close }: Terminal) {
-  const { onPointerDown, onPointerMove, onPointerUp, onOpen } = useWindow()
-  const textAreaRef = useRef<HTMLTextAreaElement | null>(null)
+  const { onPointerDown, onPointerMove, onPointerUp, onOpen, onMaximize } =
+    useWindow()
   const inputRef = useRef<HTMLInputElement | null>(null)
   const [toggleState, setToggleState] = useState(0)
   const [commandHistory, setCommandHistory] = useState<string[]>([])
@@ -109,6 +109,10 @@ exit                Closes terminal window`,
     inputRef?.current?.focus()
   }
 
+  function handleMaximize() {
+    onMaximize(windowRef)
+  }
+
   useEffect(() => {
     setTimeout(() => {
       Typewriter({
@@ -141,7 +145,10 @@ exit                Closes terminal window`,
       >
         <div className="relative h-7 px-4 float-end z-20 flex items-end gap-4 font-mono font-bold">
           <button className="cursor-pointer rounded-sm size-4 flex items-center justify-center bg-amber-500" />
-          <button className="cursor-pointer rounded-sm size-4 flex items-center justify-center bg-orange-600" />
+          <button
+            onClick={handleMaximize}
+            className="cursor-pointer rounded-sm size-4 flex items-center justify-center bg-orange-600"
+          />
           <button
             onClick={close}
             className="cursor-pointer rounded-sm size-4 flex items-center justify-center bg-red-500"

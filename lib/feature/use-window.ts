@@ -8,9 +8,11 @@ type PointerProps = {
 export default function useWindow() {
   const [offset, setOffset] = useState<{ x: number; y: number }>({ x: 0, y: 0 })
   const [dragging, setDragging] = useState(false)
+  const [rect, setRect] = useState({ width: 0, height: 0, top: 0, left: 0 })
+  const [isMax, setIsMax] = useState(false)
 
   function onPointerDown({ event, windowRef }: PointerProps) {
-    if (!windowRef.current) return
+    if (!windowRef.current || isMax) return
 
     const rect = windowRef.current.getBoundingClientRect()
 
@@ -26,7 +28,7 @@ export default function useWindow() {
   }
 
   function onPointerMove({ event, windowRef }: PointerProps) {
-    if (!dragging || !windowRef.current) return
+    if (!dragging || !windowRef.current || isMax) return
 
     const newX = event.clientX - offset.x
     const newY = event.clientY - offset.y
@@ -50,5 +52,29 @@ export default function useWindow() {
     el.classList.remove('animate-appOpen')
   }
 
-  return { onPointerDown, onPointerMove, onPointerUp, onOpen }
+  function onMaximize(windowRef: React.RefObject<HTMLElement | null>) {
+    if (!windowRef.current) return
+    const el = windowRef.current
+    if (isMax) {
+      el.style.maxWidth = "94%"
+      el.style.height = `${rect.height}px`
+      el.style.width = `${rect.width}px`
+      el.style.top = `${rect.top}px`
+      el.style.left = `${rect.left}px`
+      setIsMax(false)
+    } else {
+      const { height, width, top, left } = el.getBoundingClientRect()
+      setRect({ height, width, top, left })
+      el.style.transform = ""
+      el.style.maxHeight = '100%'
+      el.style.maxWidth = '100%'
+      el.style.width = '100%'
+      el.style.height = '100%'
+      el.style.left = `0`
+      el.style.top = `0`
+      setIsMax(true)
+    }
+  }
+
+  return { onPointerDown, onPointerMove, onPointerUp, onOpen, onMaximize }
 }
