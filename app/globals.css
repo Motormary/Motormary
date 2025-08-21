@@ -6,6 +6,7 @@
   --font-mono: var(--font-geist-mono);
   --font-ubuntu: var(--font-ubuntu);
   --font-vt: var(--font-vt);
+  --color-secondary: var(--color-gray-400)
 }
 
 body {

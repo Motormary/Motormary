@@ -1,26 +1,24 @@
 'use client'
 
 import { Typewriter } from '@/lib/client-utils'
+import { TerminalHistory } from '@/lib/definitions'
 import React, { useEffect, useRef, useState } from 'react'
-
-const bootText = `Welcome to Skyen
-\nWIP - This page will be updated everyday
-\nType help to see commands`
-const startText = 'Hello there...'
+import TerminalUser from './terminalUser'
+import { bootText } from './data'
+import WelcomeMsg from './welcome-msg'
+import useWindow from '@/lib/feature/use-window'
+import History from './history'
 
 export default function Terminal() {
+  const { onPointerDown, onPointerMove, onPointerUp, onOpen } = useWindow()
   const textAreaRef = useRef<HTMLTextAreaElement | null>(null)
   const inputRef = useRef<HTMLInputElement | null>(null)
   const [toggleState, setToggleState] = useState(0)
   const [commandHistory, setCommandHistory] = useState<string[]>([])
-  const [welcome, setWelcome] = useState<string>('')
-  const [history, setHistory] = useState<
-    {
-      type: 'system' | 'user'
-      value: string
-    }[]
-  >([])
+  const [history, setHistory] = useState<TerminalHistory[]>([])
+  const [welcomeText, setWelcomeText] = useState<string>('')
   const [command, setCommand] = useState<string>('')
+  const windowRef = useRef<HTMLDivElement>(null)
 
   const commands = () => {
     return {
@@ -36,7 +34,7 @@ sudo                Gain access to root`,
         ]),
       clear: () => {
         setHistory([])
-        setWelcome('')
+        setWelcomeText('')
         if (textAreaRef.current) textAreaRef.current.style.display = 'none'
       },
       sudo: () => {
@@ -48,18 +46,7 @@ sudo                Gain access to root`,
     }
   }
 
-  useEffect(() => {
-    setTimeout(async () => {
-      const isBooted = await Typewriter({
-        setState: setWelcome,
-        text: bootText,
-        speed: 10,
-      })
-      if (isBooted) Typewriter({ setState: setCommand, text: startText })
-    }, 2000)
-  }, [])
-
-  function handleKey(event: React.KeyboardEvent<HTMLInputElement>) {
+  function handleCommands(event: React.KeyboardEvent<HTMLInputElement>) {
     if (event.key === 'Enter') {
       setHistory((prev) => [
         ...prev,
@@ -96,64 +83,40 @@ sudo                Gain access to root`,
       setCommand(commandHistory[toggleState])
       setToggleState(() => toggleState + 1)
     }
+    if (event.key === 'ArrowDown') {
+      console.log('hey')
+    }
   }
 
-  useEffect(() => {
-    if (textAreaRef.current) {
-      const el = textAreaRef.current
-      el.style.height = 'auto'
-      el.style.minHeight = `${el.scrollHeight}px`
-    }
-  }, [welcome])
-
-  const [offset, setOffset] = useState<{ x: number; y: number }>({ x: 0, y: 0 })
-  const [dragging, setDragging] = useState(false)
-  const windowRef = useRef<HTMLDivElement>(null)
-
   function handlePointerDown(event: React.PointerEvent) {
-    if (!windowRef.current) return
-
-    const rect = windowRef.current.getBoundingClientRect()
-
-    // Offset between mouse click and window top-left
-    const offsetX = event.clientX - rect.left
-    const offsetY = event.clientY - rect.top
-
-    setOffset({ x: offsetX, y: offsetY })
-    setDragging(true)
-
-    // Capture pointer so we still get events even if mouse leaves
-    ;(event.target as HTMLElement).setPointerCapture(event.pointerId)
+    onPointerDown({ event, windowRef })
   }
 
   function handlePointerMove(event: React.PointerEvent) {
-    if (!dragging || !windowRef.current) return
-
-    const newX = event.clientX - offset.x
-    const newY = event.clientY - offset.y
-
-    windowRef.current.style.transform = ''
-    windowRef.current.style.left = `${newX}px`
-    windowRef.current.style.top = `${newY}px`
+    onPointerMove({ event, windowRef })
   }
 
-  function handlePointerUp(event: React.PointerEvent) {
-    setDragging(false)
-    ;(event.target as HTMLElement).releasePointerCapture(event.pointerId)
+  function handleOpen() {
+    onOpen(windowRef)
   }
 
-  function handleAnimationEnd() {
-    if (!windowRef.current) return
-    const el = windowRef.current
-    el.style.minWidth = '250px'
-    el.style.minHeight = '250px'
-    el.style.resize = 'both'
-    el.classList.remove('animate-appOpen')
+  function handleFocusWindow() {
+    inputRef?.current?.focus()
   }
+
+  useEffect(() => {
+    setTimeout(() => {
+      Typewriter({
+        setState: setWelcomeText,
+        text: bootText,
+        speed: 20,
+      })
+    }, 2000)
+  }, [])
 
   return (
     <div
-      onAnimationEnd={handleAnimationEnd}
+      onAnimationEnd={handleOpen}
       ref={windowRef}
       style={{
         height: '100%',
@@ -167,7 +130,7 @@ sudo                Gain access to root`,
       <div
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
-        onPointerUp={handlePointerUp}
+        onPointerUp={onPointerUp}
         className="w-full h-10 bg-slate-500 relative after:content-[''] after:absolute after:h-5 after:w-full after:bg-white/20 after:rounded-b-lg before:content-[''] before:absolute before:h-10 before:w-full before:backdrop-blur-xs before:z-10"
       >
         <div className="relative h-7 px-4 float-end z-20 flex items-end gap-4 font-mono font-bold">
@@ -179,48 +142,17 @@ sudo                Gain access to root`,
       <div
         className="opacity-0 animate-fadeIn font-ubuntu text-lg flex flex-col disabled relative p-2 overflow-x-auto overflow-y-auto h-[calc(100%-40px)]"
         style={{ scrollbarWidth: 'thin' }}
-        onClick={() => inputRef?.current?.focus()}
+        onClick={handleFocusWindow}
       >
-        <textarea
-          ref={textAreaRef}
-          value={welcome}
-          onChange={() => null}
-          disabled
-          spellCheck={false}
-          className="p-0 outline-none overflow-hidden text-slate-400 resize-none"
-        />
-        {history.length > 0
-          ? history.map((line, index) => {
-              if (line.type === 'user') {
-                return (
-                  <div
-                    key={`index=${index}-L=${line.value.length}`}
-                    className="flex"
-                  >
-                    {line.type === 'user' ? <TerminalUser /> : null}
-                    <p>{line.value}</p>
-                  </div>
-                )
-              } else {
-                return (
-                  <pre
-                    key={`index=${index}-L${line.value.length}`}
-                    className="whitespace-pre"
-                  >
-                    {line.value}
-                  </pre>
-                )
-              }
-            })
-          : null}
+        <WelcomeMsg welcome={welcomeText} />
+        <History history={history} />
         <div className="w-full flex">
           <TerminalUser />
-          {/* <span className="animate-carret">|</span> */}
           <input
             ref={inputRef}
             value={command}
             onChange={({ target }) => setCommand(target.value)}
-            onKeyDown={handleKey}
+            onKeyDown={handleCommands}
             type="text"
             className="outline-none w-full"
             autoFocus
@@ -228,16 +160,5 @@ sudo                Gain access to root`,
         </div>
       </div>
     </div>
-  )
-}
-
-function TerminalUser() {
-  return (
-    <>
-      <span className="text-green-400">sysadmin@server</span>
-      <span>:</span>
-      <span className="text-blue-400">~</span>
-      <span className="mr-1">$</span>
-    </>
   )
 }
