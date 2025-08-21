@@ -9,7 +9,11 @@ import WelcomeMsg from './welcome-msg'
 import useWindow from '@/lib/feature/use-window'
 import History from './history'
 
-export default function Terminal() {
+type Terminal = {
+  close: () => void
+}
+
+export default function Terminal({ close }: Terminal) {
   const { onPointerDown, onPointerMove, onPointerUp, onOpen } = useWindow()
   const textAreaRef = useRef<HTMLTextAreaElement | null>(null)
   const inputRef = useRef<HTMLInputElement | null>(null)
@@ -116,6 +120,7 @@ sudo                Gain access to root`,
 
   return (
     <div
+      id="terminal"
       onAnimationEnd={handleOpen}
       ref={windowRef}
       style={{
@@ -134,9 +139,12 @@ sudo                Gain access to root`,
         className="w-full h-10 bg-slate-500 relative after:content-[''] after:absolute after:h-5 after:w-full after:bg-white/20 after:rounded-b-lg before:content-[''] before:absolute before:h-10 before:w-full before:backdrop-blur-xs before:z-10"
       >
         <div className="relative h-7 px-4 float-end z-20 flex items-end gap-4 font-mono font-bold">
-          <button className="cursor-pointer rounded-sm size-4 flex items-center justify-center bg-amber-500"></button>
-          <button className="cursor-pointer rounded-sm size-4 flex items-center justify-center bg-orange-600"></button>
-          <button className="cursor-pointer rounded-sm size-4 flex items-center justify-center bg-red-500"></button>
+          <button className="cursor-pointer rounded-sm size-4 flex items-center justify-center bg-amber-500" />
+          <button className="cursor-pointer rounded-sm size-4 flex items-center justify-center bg-orange-600" />
+          <button
+            onClick={close}
+            className="cursor-pointer rounded-sm size-4 flex items-center justify-center bg-red-500"
+          />
         </div>
       </div>
       <div
