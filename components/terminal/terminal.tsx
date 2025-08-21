@@ -33,13 +33,13 @@ export default function Terminal({ close }: Terminal) {
             type: 'system',
             value: `help                Show available commands
 clear               Clears screen history
-sudo                Gain access to root`,
+sudo                Gain access to root
+exit                Closes terminal window`,
           },
         ]),
       clear: () => {
         setHistory([])
         setWelcomeText('')
-        if (textAreaRef.current) textAreaRef.current.style.display = 'none'
       },
       sudo: () => {
         setHistory((prev) => [
@@ -47,6 +47,7 @@ sudo                Gain access to root`,
           { type: 'system', value: 'Unauthorized access' },
         ])
       },
+      exit: () => close(),
     }
   }
 
