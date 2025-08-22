@@ -145,6 +145,7 @@ exit      Closes terminal window`,
       className="animate-appOpen absolute overflow-hidden max-w-[50rem] max-h-[80dvh] rounded-lg border-x-2 border-b-2 border-slate-500 shadow-xl bg-black"
     >
       <div
+        onDoubleClick={handleMaximize}
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={onPointerUp}
