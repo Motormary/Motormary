@@ -6,7 +6,6 @@ import React, { useEffect, useRef, useState } from 'react'
 import TerminalUser from './terminalUser'
 import { bootText } from './data'
 import WelcomeMsg from './welcome-msg'
-import useWindow from '@/lib/feature/use-window'
 import History from './history'
 
 type Terminal = {
@@ -14,15 +13,12 @@ type Terminal = {
 }
 
 export default function Terminal({ close }: Terminal) {
-  const { onPointerDown, onPointerMove, onPointerUp, onOpen, onMaximize } =
-    useWindow()
   const inputRef = useRef<HTMLInputElement | null>(null)
   const [toggleState, setToggleState] = useState(0)
   const [commandHistory, setCommandHistory] = useState<string[]>([])
   const [history, setHistory] = useState<TerminalHistory[]>([])
   const [welcomeText, setWelcomeText] = useState<string>('')
   const [command, setCommand] = useState<string>('')
-  const windowRef = useRef<HTMLDivElement>(null)
 
   const commands = () => {
     return {
@@ -135,24 +131,8 @@ ping      Pings target host`,
     }
   }
 
-  function handlePointerDown(event: React.PointerEvent) {
-    onPointerDown({ event, windowRef })
-  }
-
-  function handlePointerMove(event: React.PointerEvent) {
-    onPointerMove({ event, windowRef })
-  }
-
-  function handleOpen() {
-    onOpen(windowRef)
-  }
-
   function handleFocusWindow() {
     inputRef?.current?.focus()
-  }
-
-  function handleMaximize() {
-    onMaximize(windowRef)
   }
 
   useEffect(() => {
@@ -167,56 +147,23 @@ ping      Pings target host`,
 
   return (
     <div
-      id="terminal"
-      onAnimationEnd={handleOpen}
-      ref={windowRef}
-      style={{
-        height: '100dvh',
-        width: '94%',
-        top: `50%`,
-        left: `50%`,
-        transform: `translateY(-50%) translateX(-50%)`,
-      }}
-      className="animate-appOpen absolute overflow-hidden max-w-[50rem] max-h-[80dvh] rounded-lg border-x-2 border-b-2 border-slate-500 shadow-xl bg-black"
+      className="opacity-0 animate-fadeIn font-ubuntu text-lg flex flex-col disabled relative p-2 overflow-x-auto overflow-y-auto h-[calc(100%-40px)]"
+      style={{ scrollbarWidth: 'thin' }}
+      onClick={handleFocusWindow}
     >
-      <div
-        onDoubleClick={handleMaximize}
-        onPointerDown={handlePointerDown}
-        onPointerMove={handlePointerMove}
-        onPointerUp={onPointerUp}
-        className="w-full h-10 bg-slate-500 relative after:content-[''] after:absolute after:h-5 after:w-full after:bg-white/20 after:rounded-b-lg before:content-[''] before:absolute before:h-10 before:w-full before:backdrop-blur-xs before:z-10"
-      >
-        <div className="relative h-7 px-4 float-end z-20 flex items-end gap-4 font-mono font-bold">
-          <button className="cursor-pointer rounded-sm size-4 flex items-center justify-center bg-amber-500" />
-          <button
-            onClick={handleMaximize}
-            className="cursor-pointer rounded-sm size-4 flex items-center justify-center bg-orange-600"
-          />
-          <button
-            onClick={close}
-            className="cursor-pointer rounded-sm size-4 flex items-center justify-center bg-red-500"
-          />
-        </div>
-      </div>
-      <div
-        className="opacity-0 animate-fadeIn font-ubuntu text-lg flex flex-col disabled relative p-2 overflow-x-auto overflow-y-auto h-[calc(100%-40px)]"
-        style={{ scrollbarWidth: 'thin' }}
-        onClick={handleFocusWindow}
-      >
-        <WelcomeMsg welcome={welcomeText} />
-        <History history={history} />
-        <div className="w-full flex">
-          <TerminalUser />
-          <input
-            ref={inputRef}
-            value={command}
-            onChange={({ target }) => setCommand(target.value)}
-            onKeyDown={handleCommands}
-            type="text"
-            className="outline-none w-full"
-            autoFocus
-          />
-        </div>
+      <WelcomeMsg welcome={welcomeText} />
+      <History history={history} />
+      <div className="w-full flex">
+        <TerminalUser />
+        <input
+          ref={inputRef}
+          value={command}
+          onChange={({ target }) => setCommand(target.value)}
+          onKeyDown={handleCommands}
+          type="text"
+          className="outline-none w-full"
+          autoFocus
+        />
       </div>
     </div>
   )

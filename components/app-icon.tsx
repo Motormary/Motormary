@@ -2,6 +2,7 @@
 
 import { createPortal } from 'react-dom'
 import React, { useState } from 'react'
+import Window from './window/window-container'
 
 type App = {
   Node: React.ComponentType<{ close: () => void }>
@@ -27,7 +28,12 @@ export default function App({ Node, children }: App) {
     >
       {children}
       {open
-        ? createPortal(<Node close={handleClose} />, window.document.body)
+        ? createPortal(
+            <Window close={handleClose}>
+              <Node close={handleClose} />
+            </Window>,
+            window.document.body,
+          )
         : null}
     </button>
   )
