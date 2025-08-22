@@ -7,9 +7,7 @@ import TerminalUser from './terminalUser'
 import { bootText } from './data'
 import WelcomeMsg from './welcome-msg'
 import History from './history'
-import { createPortal } from 'react-dom'
 import Window from '../window/window-container'
-import ReactDOM from 'react-dom'
 import { createRoot, Root } from 'react-dom/client'
 
 type Terminal = {
