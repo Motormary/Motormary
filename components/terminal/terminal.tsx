@@ -17,7 +17,7 @@ export default function Terminal({ close }: Terminal) {
   const { onPointerDown, onPointerMove, onPointerUp, onOpen, onMaximize } =
     useWindow()
   const inputRef = useRef<HTMLInputElement | null>(null)
-  const [toggleState, setToggleState] = useState(-1)
+  const [toggleState, setToggleState] = useState(0)
   const [commandHistory, setCommandHistory] = useState<string[]>([])
   const [history, setHistory] = useState<TerminalHistory[]>([])
   const [welcomeText, setWelcomeText] = useState<string>('')
@@ -88,14 +88,17 @@ exit      Closes terminal window`,
       }, 0)
     }
     if (event.key === 'ArrowUp') {
-      const maxIndex = commandHistory.length - 1
-      setCommand(commandHistory[toggleState])
+      if (!commandHistory.length) return
+      const list = [...commandHistory].reverse()
+      const maxIndex = list.length - 1
+      setCommand(list[toggleState])
       if (toggleState === maxIndex) return
       setToggleState((prev) => prev + 1)
     }
     if (event.key === 'ArrowDown') {
+      const list = [...commandHistory].reverse()
       if (toggleState === 0) return setCommand('')
-      else if (toggleState > 0) setCommand(commandHistory[toggleState - 1])
+      else if (toggleState > 0) setCommand(list[toggleState - 1])
       setToggleState(() => toggleState - 1)
     }
   }
