@@ -7,9 +7,41 @@ import TerminalUser from './terminalUser'
 import { bootText } from './data'
 import WelcomeMsg from './welcome-msg'
 import History from './history'
+import { createPortal } from 'react-dom'
+import Window from '../window/window-container'
+import ReactDOM from 'react-dom'
+import { createRoot, Root } from 'react-dom/client'
 
 type Terminal = {
   close: () => void
+}
+
+function nedry() {
+  // create a container div
+  const container = document.createElement('div')
+  document.body.appendChild(container)
+
+  // create a React root (React 18+)
+  const root: Root = createRoot(container)
+
+  // function to close and cleanup
+  const close = () => {
+    root.unmount() // safely unmounts React component
+    container.remove() // remove the div from DOM
+  }
+
+  // render the modal
+  root.render(
+    <Window close={close}>
+      <video controls autoPlay>
+        <source
+          src="https://www.youtube.com/watch?v=RfiQYRn7fBg"
+          type="video/mp4"
+        />
+        Your browser does not support the video tag.
+      </video>
+    </Window>,
+  )
 }
 
 export default function Terminal({ close }: Terminal) {
@@ -44,6 +76,7 @@ ping      Pings target host`,
           ...prev,
           { type: 'system', value: 'Unauthorized access' },
         ])
+        nedry()
       },
       log: () =>
         setHistory((prev) =>

@@ -31,7 +31,7 @@ export default function Window({ children, close }: Window) {
 
   return (
     <div
-      id="terminal"
+      id="window"
       onAnimationEnd={handleOpen}
       ref={windowRef}
       style={{
