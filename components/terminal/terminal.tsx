@@ -17,7 +17,7 @@ export default function Terminal({ close }: Terminal) {
   const { onPointerDown, onPointerMove, onPointerUp, onOpen, onMaximize } =
     useWindow()
   const inputRef = useRef<HTMLInputElement | null>(null)
-  const [toggleState, setToggleState] = useState(0)
+  const [toggleState, setToggleState] = useState(-1)
   const [commandHistory, setCommandHistory] = useState<string[]>([])
   const [history, setHistory] = useState<TerminalHistory[]>([])
   const [welcomeText, setWelcomeText] = useState<string>('')
@@ -34,6 +34,7 @@ export default function Terminal({ close }: Terminal) {
             value: `help                Show available commands
 clear               Clears screen history
 sudo                Gain access to root
+log                 Prints command history
 exit                Closes terminal window`,
           },
         ]),
@@ -47,12 +48,19 @@ exit                Closes terminal window`,
           { type: 'system', value: 'Unauthorized access' },
         ])
       },
+      log: () =>
+        setHistory((prev) =>
+          prev.concat(
+            commandHistory.map((val) => ({ type: 'system', value: val })),
+          ),
+        ),
       exit: () => close(),
     }
   }
 
   function handleCommands(event: React.KeyboardEvent<HTMLInputElement>) {
     if (event.key === 'Enter') {
+      setToggleState(-1)
       setHistory((prev) => [
         ...prev,
         {
@@ -80,16 +88,15 @@ exit                Closes terminal window`,
       }, 0)
     }
     if (event.key === 'ArrowUp') {
-      const max = commandHistory.length
-      console.log('max', max)
-      console.log('toggle', toggleState)
-      console.log('history', commandHistory)
-      if (toggleState >= max) return
+      const maxIndex = commandHistory.length - 1
       setCommand(commandHistory[toggleState])
-      setToggleState(() => toggleState + 1)
+      if (toggleState === maxIndex) return
+      setToggleState((prev) => prev + 1)
     }
     if (event.key === 'ArrowDown') {
-      console.log('hey')
+      if (toggleState === 0) return setCommand('')
+      else if (toggleState > 0) setCommand(commandHistory[toggleState - 1])
+      setToggleState(() => toggleState - 1)
     }
   }
 
