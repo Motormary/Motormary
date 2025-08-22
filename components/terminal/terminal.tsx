@@ -31,11 +31,11 @@ export default function Terminal({ close }: Terminal) {
           ...prev,
           {
             type: 'system',
-            value: `help                Show available commands
-clear               Clears screen history
-sudo                Gain access to root
-log                 Prints command history
-exit                Closes terminal window`,
+            value: `help      Show available commands
+clear     Clears screen history
+sudo      Gain access to root
+log       Prints command history
+exit      Closes terminal window`,
           },
         ]),
       clear: () => {
@@ -136,13 +136,13 @@ exit                Closes terminal window`,
       onAnimationEnd={handleOpen}
       ref={windowRef}
       style={{
-        height: '100%',
+        height: '100dvh',
         width: '94%',
         top: `50%`,
         left: `50%`,
         transform: `translateY(-50%) translateX(-50%)`,
       }}
-      className="animate-appOpen absolute overflow-hidden max-w-[50rem] max-h-[80dvh] sm:max-h-[37.5rem] rounded-lg border-x-2 border-b-2 border-slate-500 shadow-xl bg-black"
+      className="animate-appOpen absolute overflow-hidden max-w-[50rem] max-h-[80dvh] rounded-lg border-x-2 border-b-2 border-slate-500 shadow-xl bg-black"
     >
       <div
         onPointerDown={handlePointerDown}

@@ -56,7 +56,9 @@ export default function useWindow() {
     if (!windowRef.current) return
     const el = windowRef.current
     if (isMax) {
-      el.style.maxWidth = "94%"
+      el.style.resize = 'both'
+      el.style.maxWidth = '50rem'
+      el.style.maxHeight = '80dvh'
       el.style.height = `${rect.height}px`
       el.style.width = `${rect.width}px`
       el.style.top = `${rect.top}px`
@@ -65,11 +67,12 @@ export default function useWindow() {
     } else {
       const { height, width, top, left } = el.getBoundingClientRect()
       setRect({ height, width, top, left })
-      el.style.transform = ""
-      el.style.maxHeight = '100%'
+      el.style.transform = ''
+      el.style.resize = 'none'
+      el.style.maxHeight = '100dvh'
       el.style.maxWidth = '100%'
       el.style.width = '100%'
-      el.style.height = '100%'
+      el.style.height = '100dvh'
       el.style.left = `0`
       el.style.top = `0`
       setIsMax(true)

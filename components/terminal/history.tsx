@@ -13,14 +13,14 @@ export default function History({ history }: { history: TerminalHistory[] }) {
                   className="flex"
                 >
                   {line.type === 'user' ? <TerminalUser /> : null}
-                  <p>{line.value}</p>
+                  <p className="font-ubuntu">{line.value}</p>
                 </div>
               )
             } else {
               return (
                 <pre
                   key={`index=${index}-L${line.value.length}`}
-                  className="whitespace-pre"
+                  className="whitespace-pre font-ubuntu"
                 >
                   {line.value}
                 </pre>
