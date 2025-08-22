@@ -35,7 +35,8 @@ export default function Terminal({ close }: Terminal) {
 clear     Clears screen history
 sudo      Gain access to root
 log       Prints command history
-exit      Closes terminal window`,
+exit      Closes terminal window
+ping      Pings target host`,
           },
         ]),
       clear: () => {
@@ -54,6 +55,36 @@ exit      Closes terminal window`,
             commandHistory.map((val) => ({ type: 'system', value: val })),
           ),
         ),
+      ping: () => {
+        const addr = command.split(' ')
+        if (addr.length > 2 || !addr[1])
+          return setHistory((prev) => [
+            ...prev,
+            {
+              type: 'system',
+              value: `Invalid address: ${addr.slice(1).join(',').replace(',', ' ')}`,
+            },
+          ])
+        setHistory((prev) => [
+          ...prev,
+          {
+            type: 'system',
+            value: `Pinging ${addr[1]} with 32 bytes of data:`,
+          },
+        ])
+        let nr = 0
+        const inter = setInterval(() => {
+          if (nr >= 4) return clearInterval(inter)
+          nr++
+          setHistory((prev) => [
+            ...prev,
+            {
+              type: 'system',
+              value: `Reply from ${addr[1]}: bytes=32 time=18ms TTL=249`,
+            },
+          ])
+        }, 1000)
+      },
       exit: () => close(),
     }
   }
@@ -69,8 +100,9 @@ exit      Closes terminal window`,
         },
       ])
 
+      const cmdVal = command.split(' ')
       const cmd =
-        commands()[command.toLowerCase() as keyof ReturnType<typeof commands>]
+        commands()[cmdVal[0].toLowerCase() as keyof ReturnType<typeof commands>]
 
       if (cmd) {
         setCommandHistory((prev) => [...prev, command])
