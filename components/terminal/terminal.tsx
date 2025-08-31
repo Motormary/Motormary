@@ -15,20 +15,16 @@ type Terminal = {
 }
 
 function nedry() {
-  // create a container div
   const container = document.createElement('div')
   document.body.appendChild(container)
 
-  // create a React root (React 18+)
   const root: Root = createRoot(container)
 
-  // function to close and cleanup
   const close = () => {
-    root.unmount() // safely unmounts React component
-    container.remove() // remove the div from DOM
+    root.unmount()
+    container.remove()
   }
 
-  // render the modal
   root.render(
     <Window close={close}>
       <iframe
