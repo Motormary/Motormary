@@ -2,13 +2,15 @@
 
 import { Typewriter } from '@/lib/client-utils'
 import { TerminalHistory } from '@/lib/definitions'
-import React, { useEffect, useRef, useState } from 'react'
-import TerminalUser from './terminalUser'
+import React, { useEffect, useRef, useState, useTransition } from 'react'
+import TerminalUser, { TerminalPassword } from './terminalUser'
 import { bootText } from './data'
 import WelcomeMsg from './welcome-msg'
 import History from './history'
 import Window from '../window/window-container'
 import { createRoot, Root } from 'react-dom/client'
+import { login } from '@/app/actions/auth/login'
+import { getAllUsers } from '@/app/actions/users/get'
 
 type Terminal = {
   close: () => void
@@ -45,6 +47,9 @@ export default function Terminal({ close }: Terminal) {
   const [history, setHistory] = useState<TerminalHistory[]>([])
   const [welcomeText, setWelcomeText] = useState<string>('')
   const [command, setCommand] = useState<string>('')
+  const [isAuth, setIsAuth] = useState(false)
+  const [formdata, setFormdata] = useState({ username: '', password: '' })
+  const [isPending, startTransition] = useTransition()
 
   const commands = () => {
     return {
@@ -109,11 +114,33 @@ ping      Pings target host`,
         }, 1000)
       },
       exit: () => close(),
+      login: () => {
+        const data = command.split(' ')
+        if (data.length !== 2) nedry()
+        else {
+          setIsAuth(true)
+          setFormdata({ username: data[1], password: '' })
+        }
+      },
+      users: () => {
+        startTransition(async () => {
+          const data = await getAllUsers()
+          setHistory((prev) => [
+            ...prev,
+            {
+              type: 'system',
+              value: data.success
+                ? `${JSON.stringify(data.data, null, 2)}`
+                : 'No data',
+            },
+          ])
+        })
+      },
     }
   }
 
-  function handleCommands(event: React.KeyboardEvent<HTMLInputElement>) {
-    if (event.key === 'Enter') {
+  async function handleCommands(event: React.KeyboardEvent<HTMLInputElement>) {
+    if (event.key === 'Enter' && !isAuth) {
       setToggleState(-1)
       setHistory((prev) => [
         ...prev,
@@ -142,6 +169,20 @@ ping      Pings target host`,
         inputRef?.current?.scrollIntoView()
       }, 0)
     }
+
+    if (event.key === 'Enter' && isAuth) {
+      setIsAuth(false)
+      startTransition(async () => {
+        const res = await login(formdata)
+        // if (!res?.success) return nedry()
+        setHistory((prev) => [
+          ...prev,
+          { type: 'system', value: res.success ? 'Success' : 'Failed' },
+        ])
+        setFormdata({ username: '', password: '' })
+      })
+    }
+
     if (event.key === 'ArrowUp') {
       if (!commandHistory.length) return
       const list = [...commandHistory].reverse()
@@ -155,6 +196,10 @@ ping      Pings target host`,
       if (toggleState === 0) return setCommand('')
       else if (toggleState > 0) setCommand(list[toggleState - 1])
       setToggleState(() => toggleState - 1)
+    }
+    if (event.ctrlKey && event.key === 'c') {
+      setCommand('')
+      if (isAuth) setIsAuth(false)
     }
   }
 
@@ -181,16 +226,41 @@ ping      Pings target host`,
       <WelcomeMsg welcome={welcomeText} />
       <History history={history} />
       <div className="w-full flex">
-        <TerminalUser />
-        <input
-          ref={inputRef}
-          value={command}
-          onChange={({ target }) => setCommand(target.value)}
-          onKeyDown={handleCommands}
-          type="text"
-          className="outline-none w-full"
-          autoFocus
-        />
+        {isAuth ? (
+          <>
+            <TerminalPassword />
+            <input
+              ref={inputRef}
+              value={formdata.password}
+              onChange={({ target }) =>
+                setFormdata((prev) => ({ ...prev, password: target.value }))
+              }
+              onKeyDown={handleCommands}
+              type="password"
+              className="outline-none w-full"
+              autoFocus={isAuth}
+            />
+          </>
+        ) : (
+          <>
+            <TerminalUser />
+            {isPending ? (
+              <div className="ml-2 relative">
+                <span className="animate-spin absolute left-0 top-1/2 -translate-y-1/2 size-4 rounded-full border-l shadow-green-500 border-green-400" />
+              </div>
+            ) : (
+              <input
+                ref={inputRef}
+                value={command}
+                onChange={({ target }) => setCommand(target.value)}
+                onKeyDown={handleCommands}
+                type="text"
+                className="outline-none w-full"
+                autoFocus
+              />
+            )}
+          </>
+        )}
       </div>
     </div>
   )

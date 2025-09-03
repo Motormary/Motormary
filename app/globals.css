@@ -16,13 +16,36 @@ body {
     rgba(34, 48, 86, 1) 66.8%,
     rgba(15, 23, 42, 1) 100.2%
   );
+  color: white;
 }
 @theme {
   --animate-appOpen: openApp 2s forwards;
   --animate-appClose: closeApp 2s forwards;
   --animate-fadeIn: fadeIn ease 0.5s 2s forwards;
   --animate-carret: blink 1s infinite 2s;
+  --animate-loading: loading 1.5s infinite;
 
+  @keyframes loading {
+    15% {
+      rotate: 60deg;
+    }
+    30% {
+      rotate: 120deg;
+    }
+    45% {
+      rotate: 180deg;
+    }
+    60% {
+      rotate: 240deg;
+    }
+    75% {
+      rotate: 300deg;
+    }
+    100% {
+      rotate: 360deg;
+    }
+  }
+  
   @keyframes fadeIn {
     from {
       opacity: 0;
