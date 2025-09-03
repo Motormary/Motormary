@@ -174,7 +174,7 @@ ping      Pings target host`,
       setIsAuth(false)
       startTransition(async () => {
         const res = await login(formdata)
-        // if (!res?.success) return nedry()
+        if (!res.success) return nedry()
         setHistory((prev) => [
           ...prev,
           { type: 'system', value: res.success ? 'Success' : 'Failed' },

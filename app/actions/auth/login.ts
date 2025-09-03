@@ -21,7 +21,6 @@ export async function login(data: props) {
 
   if (!res.ok) return { success: false, data: null }
   const setCookie = res.headers.get('set-cookie')
-  console.log('⚡ Incoming session cookie~~~~~~~~~~~~~~~~:', setCookie)
   await setSession(setCookie)
   return { success: true, data: null }
 }
