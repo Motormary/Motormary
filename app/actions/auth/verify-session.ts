@@ -1,16 +1,12 @@
 'use server'
 import 'server-only'
 
-import { cookies } from 'next/headers'
+import { getCookie } from '@/lib/session'
 
 export async function verifySession() {
-  const cookieStore = await cookies()
-
-  // Get the session cookie
-  const sessionCookie = cookieStore.get('sid')
+  const sessionCookie = await getCookie('sid')
 
   if (!sessionCookie) return null
-  const cookie = `${sessionCookie.name}=${sessionCookie.value}`
 
   try {
     const res = await fetch('http://127.0.0.1:9000/verify', {
@@ -18,13 +14,13 @@ export async function verifySession() {
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
-        cookie,
+        cookie: sessionCookie,
       },
     })
-    if (!res.ok) return null
-    return cookie
+    if (!res.ok) return false
+    return true
   } catch (e) {
     console.error(e)
-    return null
+    return false
   }
 }

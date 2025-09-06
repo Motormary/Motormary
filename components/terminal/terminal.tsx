@@ -1,16 +1,17 @@
 'use client'
 
+import { login } from '@/app/actions/auth/login'
+import { getAllUsers } from '@/app/actions/users/get'
 import { Typewriter } from '@/lib/client-utils'
 import { TerminalHistory } from '@/lib/definitions'
 import React, { useEffect, useRef, useState, useTransition } from 'react'
-import TerminalUser, { TerminalPassword } from './terminalUser'
-import { bootText } from './data'
-import WelcomeMsg from './welcome-msg'
-import History from './history'
-import Window from '../window/window-container'
 import { createRoot, Root } from 'react-dom/client'
-import { login } from '@/app/actions/auth/login'
-import { getAllUsers } from '@/app/actions/users/get'
+import Window from '../window/window-container'
+import { copyContentGrid, copyCssReset } from './commands'
+import { bootText } from './data'
+import History from './history'
+import TerminalUser, { TerminalPassword } from './terminalUser'
+import WelcomeMsg from './welcome-msg'
 
 type Terminal = {
   close: () => void
@@ -42,12 +43,12 @@ function nedry() {
 
 export default function Terminal({ close }: Terminal) {
   const inputRef = useRef<HTMLInputElement | null>(null)
-  const [toggleState, setToggleState] = useState(0)
+  const [toggleState, setToggleState] = useState(0) // tracks arrowkey up/down through cmd history
   const [commandHistory, setCommandHistory] = useState<string[]>([])
-  const [history, setHistory] = useState<TerminalHistory[]>([])
+  const [history, setHistory] = useState<TerminalHistory[]>([]) // System messages
   const [welcomeText, setWelcomeText] = useState<string>('')
   const [command, setCommand] = useState<string>('')
-  const [isAuth, setIsAuth] = useState(false)
+  const [auth, setAuth] = useState({ isAuthing: false, hasAuth: false })
   const [formdata, setFormdata] = useState({ username: '', password: '' })
   const [isPending, startTransition] = useTransition()
 
@@ -71,11 +72,15 @@ ping      Pings target host`,
         setWelcomeText('')
       },
       sudo: () => {
-        setHistory((prev) => [
-          ...prev,
-          { type: 'system', value: 'Unauthorized access' },
-        ])
-        nedry()
+        if (auth.hasAuth) {
+          // Execute(command)
+        } else {
+          setHistory((prev) => [
+            ...prev,
+            { type: 'system', value: 'Unauthorized access' },
+          ])
+          nedry()
+        }
       },
       log: () =>
         setHistory((prev) =>
@@ -118,7 +123,7 @@ ping      Pings target host`,
         const data = command.split(' ')
         if (data.length !== 2) nedry()
         else {
-          setIsAuth(true)
+          setAuth((prev) => ({ ...prev, isAuthing: true }))
           setFormdata({ username: data[1], password: '' })
         }
       },
@@ -136,11 +141,25 @@ ping      Pings target host`,
           ])
         })
       },
+      cssgrid: () => {
+        setHistory((prev) => [
+          ...prev,
+          { type: 'system', value: 'Copied to clipboard' },
+        ])
+        copyContentGrid()
+      },
+      cssreset: () => {
+        setHistory((prev) => [
+          ...prev,
+          { type: 'system', value: 'Copied to clipboard' },
+        ])
+        copyCssReset()
+      },
     }
   }
 
   async function handleCommands(event: React.KeyboardEvent<HTMLInputElement>) {
-    if (event.key === 'Enter' && !isAuth) {
+    if (event.key === 'Enter' && !auth.isAuthing) {
       setToggleState(-1)
       setHistory((prev) => [
         ...prev,
@@ -170,8 +189,8 @@ ping      Pings target host`,
       }, 0)
     }
 
-    if (event.key === 'Enter' && isAuth) {
-      setIsAuth(false)
+    if (event.key === 'Enter' && auth.isAuthing) {
+      setAuth((prev) => ({ ...prev, isAuthing: false }))
       startTransition(async () => {
         const res = await login(formdata)
         if (!res.success) return nedry()
@@ -179,6 +198,7 @@ ping      Pings target host`,
           ...prev,
           { type: 'system', value: res.success ? 'Success' : 'Failed' },
         ])
+        setAuth((prev) => ({ ...prev, hasAuth: true }))
         setFormdata({ username: '', password: '' })
       })
     }
@@ -199,7 +219,7 @@ ping      Pings target host`,
     }
     if (event.ctrlKey && event.key === 'c') {
       setCommand('')
-      if (isAuth) setIsAuth(false)
+      if (auth.isAuthing) setAuth((prev) => ({ ...prev, isAuthing: false }))
     }
   }
 
@@ -226,7 +246,7 @@ ping      Pings target host`,
       <WelcomeMsg welcome={welcomeText} />
       <History history={history} />
       <div className="w-full flex">
-        {isAuth ? (
+        {auth.isAuthing ? (
           <>
             <TerminalPassword />
             <input
@@ -238,7 +258,7 @@ ping      Pings target host`,
               onKeyDown={handleCommands}
               type="password"
               className="outline-none w-full"
-              autoFocus={isAuth}
+              autoFocus={auth.isAuthing}
             />
           </>
         ) : (

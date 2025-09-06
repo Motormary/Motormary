@@ -2,6 +2,8 @@
 import 'server-only'
 
 import { cookies } from 'next/headers'
+import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies'
+import { cache } from 'react'
 
 export async function setSession(setCookieHeader: string | null = '') {
   if (setCookieHeader) {
@@ -18,4 +20,15 @@ export async function setSession(setCookieHeader: string | null = '') {
       console.error('error setting cookie:', e)
     }
   }
+}
+
+export const getCookieCache = cache(async (cookieName: string) => await getCookie(cookieName))
+
+export async function getCookie(cookieName: string): Promise<string | null | undefined> {
+  const cookieStore = await cookies()
+  if (cookieStore.has(cookieName)) {
+    const sessionCookie = cookieStore.get(cookieName)
+    return `${sessionCookie?.name}=${sessionCookie?.value}`
+  }
+  return null
 }
