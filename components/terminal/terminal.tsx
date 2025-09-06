@@ -5,13 +5,13 @@ import { getAllUsers } from '@/app/actions/users/get'
 import { Typewriter } from '@/lib/client-utils'
 import { TerminalHistory } from '@/lib/definitions'
 import React, { useEffect, useRef, useState, useTransition } from 'react'
-import { createRoot, Root } from 'react-dom/client'
 import { copyContentGrid, copyCssReset } from './commands'
 import { bootText } from './data'
 import History from './history'
 import TerminalUser, { TerminalPassword } from './terminalUser'
 import WelcomeMsg from './welcome-msg'
 import nedry from './ah-ah-ah'
+import { Execute } from '@/app/actions/live/execute'
 
 type Terminal = {
   close: () => void
@@ -47,9 +47,13 @@ ping      Pings target host`,
         setHistory([])
         setWelcomeText('')
       },
-      sudo: () => {
+      sudo: async () => {
         if (auth.hasAuth) {
-          // Execute(command)
+          const { stdout, stderr } = await Execute(command)
+          setHistory((prev) => [
+            ...prev,
+            { type: 'system', value: stdout ?? `${stderr}` },
+          ])
         } else {
           setHistory((prev) => [
             ...prev,
