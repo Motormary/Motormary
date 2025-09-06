@@ -28,7 +28,7 @@ export default function App({ Node, children, title }: App) {
       onClick={handleSetOpen}
       className="max-w-20 p-1 group"
     >
-      <div className="bg-black mx-auto size-14 rounded-md border-2 border-slate-500 group-hover:border-slate-400 focus:outline outline-slate-300 font-mono flex items-center justify-center">
+      <div className="bg-black mx-auto size-14 rounded-md border-2 border-slate-500 group-hover:border-slate-400 focus:outline outline-slate-300 font-mono flex items-center justify-center overflow-hidden">
         {children}
         {open
           ? createPortal(

@@ -1,4 +1,5 @@
 import App from '@/components/app-icon'
+import ConverterIcon from '@/components/img-converter/converter-icon'
 import Paint from '@/components/paint/paint'
 import PaintIcon from '@/components/paint/paint-icon'
 import Taskbar from '@/components/taskbar/taskbar'
@@ -10,6 +11,9 @@ export default function Home() {
     <main className="h-[100dvh] w-full grid gap-2 grid-rows-[repeat(auto-fill,minmax(80px,1fr))] p-4 relative overflow-hidden">
       <App title="Terminal" Node={Terminal}>
         <TerminalIcon />
+      </App>
+      <App title="Magick" Node={Paint}>
+        <ConverterIcon />
       </App>
       <App title="Bob Ross" Node={Paint}>
         <PaintIcon />
