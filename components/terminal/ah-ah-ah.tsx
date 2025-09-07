@@ -17,7 +17,7 @@ export default function nedry() {
       <iframe
         width="100%"
         height="100%"
-        src="https://www.youtube.com/embed/RfiQYRn7fBg?autoplay=1"
+        src="https://www.youtube.com/embed/RfiQYRn7fBg?start=10&autoplay=1"
         title="YouTube video player"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;"
       ></iframe>
