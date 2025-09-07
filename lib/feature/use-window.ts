@@ -30,8 +30,12 @@ export default function useWindow() {
   function onPointerMove({ event, windowRef }: PointerProps) {
     if (!dragging || !windowRef.current || isMax) return
 
+    const rect = windowRef.current.getBoundingClientRect()
     const newX = event.clientX - offset.x
     const newY = event.clientY - offset.y
+
+    // prevents dragging window outside of browser window
+    if (newY < 0 || newX > window.innerWidth - 10 || newX < -rect.width + 10 || newY > window.innerHeight - 10) return
 
     windowRef.current.style.transform = ''
     windowRef.current.style.left = `${newX}px`
