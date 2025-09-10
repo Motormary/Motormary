@@ -6,15 +6,24 @@ type PointerProps = {
 }
 
 export default function useWindow() {
-  const [offset, setOffset] = useState<{ x: number; y: number }>({ x: 0, y: 0 })
+  const [offset, setOffset] = useState<{ x: number; y: number }>({
+    x: 0,
+    y: 0,
+  })
   const [dragging, setDragging] = useState(false)
-  const [rect, setRect] = useState({ width: 0, height: 0, top: 0, left: 0 })
+  const [rect, setRect] = useState({
+    width: 0,
+    height: 0,
+    top: 0,
+    left: 0,
+  })
   const [isMax, setIsMax] = useState(false)
 
   function onPointerDown({ event, windowRef }: PointerProps) {
     if (!windowRef.current || isMax) return
 
     const rect = windowRef.current.getBoundingClientRect()
+    windowRef.current.style.zIndex = '9999'
 
     // Offset between mouse click and window top-left
     const offsetX = event.clientX - rect.left
@@ -35,16 +44,26 @@ export default function useWindow() {
     const newY = event.clientY - offset.y
 
     // prevents dragging window outside of browser window
-    if (newY < 0 || newX > window.innerWidth - 10 || newX < -rect.width + 10 || newY > window.innerHeight - 10) return
+    if (
+      newY < 0 ||
+      newX > window.innerWidth - 10 ||
+      newX < -rect.width + 10 ||
+      newY > window.innerHeight - 10
+    )
+      return
 
     windowRef.current.style.transform = ''
     windowRef.current.style.left = `${newX}px`
     windowRef.current.style.top = `${newY}px`
   }
 
-  function onPointerUp(event: React.PointerEvent) {
+  function onPointerUp({ event, windowRef }: PointerProps) {
+    if (!windowRef.current) return
+    windowRef.current.style.zIndex = '10'
     setDragging(false)
-    ;(event.target as HTMLElement).releasePointerCapture(event.pointerId)
+    ;(event.target as HTMLElement).releasePointerCapture(
+      event.pointerId,
+    )
   }
 
   function onOpen(windowRef: React.RefObject<HTMLElement | null>) {
@@ -56,7 +75,9 @@ export default function useWindow() {
     el.classList.remove('animate-appOpen')
   }
 
-  function onMaximize(windowRef: React.RefObject<HTMLElement | null>) {
+  function onMaximize(
+    windowRef: React.RefObject<HTMLElement | null>,
+  ) {
     if (!windowRef.current) return
     const el = windowRef.current
     if (isMax) {
@@ -83,5 +104,11 @@ export default function useWindow() {
     }
   }
 
-  return { onPointerDown, onPointerMove, onPointerUp, onOpen, onMaximize }
+  return {
+    onPointerDown,
+    onPointerMove,
+    onPointerUp,
+    onOpen,
+    onMaximize,
+  }
 }

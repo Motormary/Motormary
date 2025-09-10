@@ -4,7 +4,12 @@ import { login } from '@/app/actions/auth/login'
 import { getAllUsers } from '@/app/actions/users/get'
 import { Typewriter } from '@/lib/client-utils'
 import { TerminalHistory } from '@/lib/definitions'
-import React, { useEffect, useRef, useState, useTransition } from 'react'
+import React, {
+  useEffect,
+  useRef,
+  useState,
+  useTransition,
+} from 'react'
 import { copyContentGrid, copyCssReset } from './commands'
 import { bootText } from './data'
 import History from './history'
@@ -24,8 +29,14 @@ export default function Terminal({ close }: Terminal) {
   const [history, setHistory] = useState<TerminalHistory[]>([]) // System messages
   const [welcomeText, setWelcomeText] = useState<string>('')
   const [command, setCommand] = useState<string>('')
-  const [auth, setAuth] = useState({ isAuthing: false, hasAuth: false })
-  const [formdata, setFormdata] = useState({ username: '', password: '' })
+  const [auth, setAuth] = useState({
+    isAuthing: false,
+    hasAuth: false,
+  })
+  const [formdata, setFormdata] = useState({
+    username: '',
+    password: '',
+  })
   const [isPending, startTransition] = useTransition()
 
   const commands = () => {
@@ -48,13 +59,13 @@ ping      Pings target host`,
         setWelcomeText('')
       },
       sudo: async () => {
-        if (auth.hasAuth) {
+        try {
           const { stdout, stderr } = await Execute(command)
           setHistory((prev) => [
             ...prev,
             { type: 'system', value: stdout ?? `${stderr}` },
           ])
-        } else {
+        } catch (e) {
           setHistory((prev) => [
             ...prev,
             { type: 'system', value: 'Unauthorized access' },
@@ -65,7 +76,10 @@ ping      Pings target host`,
       log: () =>
         setHistory((prev) =>
           prev.concat(
-            commandHistory.map((val) => ({ type: 'system', value: val })),
+            commandHistory.map((val) => ({
+              type: 'system',
+              value: val,
+            })),
           ),
         ),
       ping: () => {
@@ -138,7 +152,9 @@ ping      Pings target host`,
     }
   }
 
-  async function handleCommands(event: React.KeyboardEvent<HTMLInputElement>) {
+  async function handleCommands(
+    event: React.KeyboardEvent<HTMLInputElement>,
+  ) {
     if (event.key === 'Enter' && !auth.isAuthing) {
       setToggleState(-1)
       setHistory((prev) => [
@@ -151,7 +167,9 @@ ping      Pings target host`,
 
       const cmdVal = command.split(' ')
       const cmd =
-        commands()[cmdVal[0].toLowerCase() as keyof ReturnType<typeof commands>]
+        commands()[
+          cmdVal[0].toLowerCase() as keyof ReturnType<typeof commands>
+        ]
 
       if (cmd) {
         setCommandHistory((prev) => [...prev, command])
@@ -176,7 +194,10 @@ ping      Pings target host`,
         if (!res.success) return nedry()
         setHistory((prev) => [
           ...prev,
-          { type: 'system', value: res.success ? 'Success' : 'Failed' },
+          {
+            type: 'system',
+            value: res.success ? 'Success' : 'Failed',
+          },
         ])
         setAuth((prev) => ({ ...prev, hasAuth: true }))
         setFormdata({ username: '', password: '' })
@@ -199,7 +220,8 @@ ping      Pings target host`,
     }
     if (event.ctrlKey && event.key === 'c') {
       setCommand('')
-      if (auth.isAuthing) setAuth((prev) => ({ ...prev, isAuthing: false }))
+      if (auth.isAuthing)
+        setAuth((prev) => ({ ...prev, isAuthing: false }))
     }
   }
 
@@ -233,7 +255,10 @@ ping      Pings target host`,
               ref={inputRef}
               value={formdata.password}
               onChange={({ target }) =>
-                setFormdata((prev) => ({ ...prev, password: target.value }))
+                setFormdata((prev) => ({
+                  ...prev,
+                  password: target.value,
+                }))
               }
               onKeyDown={handleCommands}
               type="password"

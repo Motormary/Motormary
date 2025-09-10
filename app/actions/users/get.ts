@@ -2,6 +2,7 @@
 
 import { getCookie } from '@/lib/session'
 import { verifySession } from '../auth/verify-session'
+import { getBaseApi } from '@/lib/server-utils'
 
 export async function getAllUsers() {
   const session = await verifySession()
@@ -10,7 +11,7 @@ export async function getAllUsers() {
   const headers = new Headers()
   headers.append('Accept', 'application/json')
   headers.append('cookie', sessionCookie)
-  const res = await fetch('http://127.0.0.1:9000/users', {
+  const res = await fetch(getBaseApi('users'), {
     method: 'GET',
     headers,
   })

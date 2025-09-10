@@ -2,6 +2,7 @@
 import 'server-only'
 
 import { getCookie } from '@/lib/session'
+import { getBaseApi } from '@/lib/server-utils'
 
 export async function verifySession() {
   const sessionCookie = await getCookie('sid')
@@ -9,7 +10,7 @@ export async function verifySession() {
   if (!sessionCookie) return null
 
   try {
-    const res = await fetch('http://127.0.0.1:9000/verify', {
+    const res = await fetch(getBaseApi('verify'), {
       method: 'GET',
       credentials: 'include',
       headers: {

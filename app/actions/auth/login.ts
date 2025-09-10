@@ -1,5 +1,6 @@
 'use server'
 
+import { getBaseApi } from '@/lib/server-utils'
 import { setSession } from '@/lib/session'
 
 type props = {
@@ -8,12 +9,13 @@ type props = {
 }
 
 export async function login(data: props) {
-  if (!data.password || !data.username) return { success: false, data: null }
+  if (!data.password || !data.username)
+    return { success: false, data: null }
   const headers = new Headers()
   headers.append('Content-Type', 'application/json')
   headers.append('Accept', 'application/json')
 
-  const res = await fetch('http://127.0.0.1:9000/login', {
+  const res = await fetch(getBaseApi('login'), {
     method: 'POST',
     body: JSON.stringify(data),
     headers,
