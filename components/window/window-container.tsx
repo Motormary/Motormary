@@ -9,8 +9,13 @@ type Window = {
 }
 
 export default function Window({ children, close }: Window) {
-  const { onPointerDown, onPointerMove, onPointerUp, onOpen, onMaximize } =
-    useWindow()
+  const {
+    onPointerDown,
+    onPointerMove,
+    onPointerUp,
+    onOpen,
+    onMaximize,
+  } = useWindow()
   const windowRef = useRef<HTMLDivElement>(null)
 
   function handlePointerDown(event: React.PointerEvent) {
@@ -41,14 +46,14 @@ export default function Window({ children, close }: Window) {
         left: `50%`,
         transform: `translateY(-50%) translateX(-50%)`,
       }}
-      className="animate-appOpen absolute overflow-hidden max-w-[50rem] max-h-[80dvh] rounded-lg border-x-2 border-b-2 border-slate-500 shadow-xl bg-black"
+      className="animate-appOpen absolute overflow-hidden max-w-[50rem] max-h-[80dvh] rounded-lg border-2 border-slate-500 shadow-xl bg-black z-10"
     >
       <div
         onDoubleClick={handleMaximize}
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={onPointerUp}
-        className="w-full h-10 bg-slate-500 relative after:content-[''] after:absolute after:h-5 after:w-full after:bg-white/20 after:rounded-b-lg before:content-[''] before:absolute before:h-10 before:w-full before:backdrop-blur-xs before:z-10"
+        className="w-full h-10 bg-slate-500 relative after:content-[''] after:absolute after:h-5 after:w-full after:bg-white/20 after:rounded-b-lg before:content-[''] before:absolute before:h-10 before:w-full before:backdrop-blur-xs z-10 before:z-20"
       >
         <div className="relative h-7 px-4 float-end z-20 flex items-end gap-4 font-mono font-bold">
           <button className="cursor-pointer rounded-sm size-4 flex items-center justify-center bg-amber-500" />

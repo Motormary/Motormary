@@ -3,6 +3,7 @@ import 'server-only'
 import util from 'util'
 import { exec } from 'child_process'
 import { verifySession } from '../auth/verify-session'
+import { stderr, stdout } from 'process'
 
 const execAsync = util.promisify(exec)
 
@@ -15,6 +16,7 @@ const allowedCommands = [
   'lshw',
   'free',
   'lscpu',
+  'help',
 ]
 
 export async function Execute(command: string) {
@@ -26,6 +28,8 @@ export async function Execute(command: string) {
   if (!session || !isAllowed)
     return { stdout: null, stderr: `Command not found ${command}` }
 
+  if (cmd == 'help') return {stderr: null, stdout: JSON.stringify(allowedCommands, null, 2)}
+  
   try {
     const { stdout, stderr } = await execAsync(cmd, {
       timeout: 5000,

@@ -1,4 +1,4 @@
-import { getBandwidth } from '@/lib/utils'
+import { getBandwidth } from '@/lib/dashboard/utils'
 import { exec } from 'child_process'
 import util from 'util'
 const execAsync = util.promisify(exec)
