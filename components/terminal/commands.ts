@@ -1,9 +1,12 @@
-import { contentGrid, cssReset } from './data'
+import { cmdHelp } from './data'
 
-export function copyContentGrid() {
-  navigator.clipboard.writeText(contentGrid)
+type Commands = {
+  help: () => string
 }
 
-export function copyCssReset() {
-  navigator.clipboard.writeText(cssReset)
+export const commandList = (cmd: string) => {
+  switch (cmd) {
+    case 'help':
+      return cmdHelp
+  }
 }

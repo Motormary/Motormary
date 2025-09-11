@@ -1,22 +1,17 @@
 'use client'
 
 import { login } from '@/app/actions/auth/login'
+import { Execute } from '@/app/actions/live/execute'
 import { getAllUsers } from '@/app/actions/users/get'
 import { Typewriter } from '@/lib/client-utils'
 import { TerminalHistory } from '@/lib/definitions'
-import React, {
-  useEffect,
-  useRef,
-  useState,
-  useTransition,
-} from 'react'
-import { copyContentGrid, copyCssReset } from './commands'
+import React, { useRef, useState, useTransition } from 'react'
+import nedry from './ah-ah-ah'
+import { copyContentGrid, copyCssReset } from './command-list'
 import { bootText } from './data'
 import History from './history'
 import TerminalUser, { TerminalPassword } from './terminalUser'
 import WelcomeMsg from './welcome-msg'
-import nedry from './ah-ah-ah'
-import { Execute } from '@/app/actions/live/execute'
 
 type Terminal = {
   close: () => void
@@ -27,8 +22,20 @@ export default function Terminal({ close }: Terminal) {
   const [toggleState, setToggleState] = useState(0) // tracks arrowkey up/down through cmd history
   const [commandHistory, setCommandHistory] = useState<string[]>([])
   const [history, setHistory] = useState<TerminalHistory[]>([]) // System messages
-  const [welcomeText, setWelcomeText] = useState<string>('')
   const [command, setCommand] = useState<string>('')
+
+  const [welcomeText, setWelcomeText] = useState<
+    string | (() => void)
+  >(() => {
+    setTimeout(() => {
+      Typewriter({
+        setState: setWelcomeText,
+        text: bootText,
+        speed: 20,
+      })
+    }, 2000)
+  })
+
   const [auth, setAuth] = useState({
     isAuthing: false,
     hasAuth: false,
@@ -229,23 +236,13 @@ ping      Pings target host`,
     inputRef?.current?.focus()
   }
 
-  useEffect(() => {
-    setTimeout(() => {
-      Typewriter({
-        setState: setWelcomeText,
-        text: bootText,
-        speed: 20,
-      })
-    }, 2000)
-  }, [])
-
   return (
     <div
       className="opacity-0 animate-fadeIn font-ubuntu text-lg flex flex-col disabled relative p-2 overflow-x-auto overflow-y-auto h-[calc(100%-40px)]"
       style={{ scrollbarWidth: 'thin' }}
       onClick={handleFocusWindow}
     >
-      <WelcomeMsg welcome={welcomeText} />
+      <WelcomeMsg welcome={welcomeText as string} />
       <History history={history} />
       <div className="w-full flex">
         {auth.isAuthing ? (

@@ -81,3 +81,10 @@ background-size: cover;
 shape-margin: 0.75rem;
 }
 `
+
+export const cmdHelp = `help      Show available commands
+clear     Clears screen history
+sudo      Gain access to root
+log       Prints command history
+exit      Closes terminal window
+ping      Pings target host`
