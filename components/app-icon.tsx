@@ -3,6 +3,7 @@
 import { createPortal } from 'react-dom'
 import React, { useEffect, useState } from 'react'
 import Window from './window/window-container'
+import { useWindowProvider } from './window-context'
 
 type App = {
   Node: React.ComponentType<{ close: () => void; open: boolean }>
@@ -12,13 +13,18 @@ type App = {
 
 export default function App({ Node, children, title }: App) {
   const [open, setOpen] = useState(false)
+  const { handleOpenWindow, handleCloseWindow } = useWindowProvider()
 
   function handleSetOpen() {
     if (open) return
+    console.log('open')
+    handleOpenWindow({ focused: true, icon: children, minimized: false, title })
     setOpen(true)
   }
 
   function handleClose() {
+    console.log('closed')
+    handleCloseWindow(title)
     setOpen(false)
   }
 
@@ -32,7 +38,7 @@ export default function App({ Node, children, title }: App) {
         {children}
         {open
           ? createPortal(
-              <Window close={handleClose}>
+              <Window title={title} close={handleClose}>
                 <Node open={open} close={handleClose} />
               </Window>,
               window.document.body,

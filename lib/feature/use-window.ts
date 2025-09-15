@@ -1,3 +1,4 @@
+import { useWindowProvider } from '@/components/window-context'
 import React, { useState } from 'react'
 
 type PointerProps = {
@@ -6,6 +7,7 @@ type PointerProps = {
 }
 
 export default function useWindow() {
+  const { handleMinimize } = useWindowProvider()
   const [offset, setOffset] = useState<{ x: number; y: number }>({
     x: 0,
     y: 0,
@@ -61,9 +63,7 @@ export default function useWindow() {
     if (!windowRef.current) return
     windowRef.current.style.zIndex = '10'
     setDragging(false)
-    ;(event.target as HTMLElement).releasePointerCapture(
-      event.pointerId,
-    )
+    ;(event.target as HTMLElement).releasePointerCapture(event.pointerId)
   }
 
   function onOpen(windowRef: React.RefObject<HTMLElement | null>) {
@@ -75,9 +75,7 @@ export default function useWindow() {
     el.classList.remove('animate-appOpen')
   }
 
-  function onMaximize(
-    windowRef: React.RefObject<HTMLElement | null>,
-  ) {
+  function onMaximize(windowRef: React.RefObject<HTMLElement | null>) {
     if (!windowRef.current) return
     const el = windowRef.current
     if (isMax) {
@@ -104,11 +102,17 @@ export default function useWindow() {
     }
   }
 
+  function onMinimize(windowRef: React.RefObject<HTMLElement | null>) {
+    if (!windowRef.current) return
+    handleMinimize(windowRef.current.id)
+  }
+
   return {
     onPointerDown,
     onPointerMove,
     onPointerUp,
     onOpen,
     onMaximize,
+    onMinimize,
   }
 }

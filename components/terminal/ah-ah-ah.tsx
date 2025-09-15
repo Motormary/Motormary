@@ -13,7 +13,7 @@ export default function nedry() {
   }
 
   root.render(
-    <Window close={close}>
+    <Window title="nedry" close={close}>
       <iframe
         width="100%"
         height="100%"

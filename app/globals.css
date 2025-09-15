@@ -1,7 +1,7 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
-@custom-variant dark (&:is(.dark *));
+/* @custom-variant dark (&:is(.dark *)); */
 
 /* TW DOCS: When defining theme variables that reference other variables, use the inline option */
 @theme inline {
@@ -58,7 +58,7 @@ body {
 
 @theme {
   --animate-appOpen: openApp 2s forwards;
-  --animate-appClose: closeApp 2s forwards;
+  --animate-minimize: minimizeApp 0.5s forwards;
   --animate-fadeIn: fadeIn ease 0.5s 2s forwards;
   --animate-carret: blink 1s infinite 2s;
   --animate-loading: loading 1.5s infinite;
@@ -129,27 +129,12 @@ body {
       height: 100%;
     }
   }
-  @keyframes closeApp {
-    0% {
-      width: 94%;
-      height: 100%;
-    }
-    40% {
-      width: 94%;
-      height: 100%;
-    }
-    70% {
-      width: 94%;
-      height: 0%;
-    }
-    99% {
-      width: 0%;
-      height: 0%;
-    }
+  @keyframes minimizeApp {
     100% {
-      width: 0%;
-      height: 0%;
-    }
+      bottom: 0px;
+      left: 0px;
+      opacity: 0;
+    };
   }
 }
 
