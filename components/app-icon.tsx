@@ -1,7 +1,7 @@
 'use client'
 
 import { createPortal } from 'react-dom'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Window from './window/window-container'
 import { useWindowProvider } from './window-context'
 
