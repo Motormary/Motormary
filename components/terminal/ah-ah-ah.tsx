@@ -13,14 +13,12 @@ export default function nedry() {
   }
 
   root.render(
-    <Window title="nedry" close={close}>
-      <iframe
-        width="100%"
-        height="100%"
-        src="https://www.youtube.com/embed/RfiQYRn7fBg?start=10&autoplay=1"
-        title="YouTube video player"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;"
-      ></iframe>
-    </Window>,
+    <iframe
+      width="100%"
+      height="100%"
+      src="https://www.youtube.com/embed/RfiQYRn7fBg?start=10&autoplay=1"
+      title="YouTube video player"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;"
+    ></iframe>,
   )
 }

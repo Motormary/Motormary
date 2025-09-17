@@ -6,31 +6,41 @@ import Window from './window/window-container'
 import { useWindowProvider } from './window-context'
 
 type App = {
-  Node: React.ComponentType<{ close: () => void; open: boolean }>
+  Node: React.ComponentType<{ title: string; open: boolean }>
   children: React.ReactNode
   title: string
 }
 
 export default function App({ Node, children, title }: App) {
-  const [open, setOpen] = useState(false)
-  const { handleOpenWindow, handleCloseWindow } = useWindowProvider()
+  const {
+    handleOpenWindow,
+    handleCloseWindow,
+    getWindowState,
+    handleMinimize,
+  } = useWindowProvider()
+  const open = getWindowState(title)?.open
 
   function handleSetOpen() {
+    if (open && getWindowState(title)?.minimized) handleMinimize(title)
     if (open) return
     console.log('open')
-    handleOpenWindow({ focused: true, icon: children, minimized: false, title })
-    setOpen(true)
+    handleOpenWindow({
+      focused: true,
+      icon: children,
+      minimized: false,
+      title,
+      open: true,
+    })
   }
 
   function handleClose() {
     console.log('closed')
     handleCloseWindow(title)
-    setOpen(false)
   }
 
   return (
     <button
-      disabled={open}
+      key={`icon-${title}`}
       onClick={handleSetOpen}
       className="max-w-20 p-1 group"
     >
@@ -38,8 +48,8 @@ export default function App({ Node, children, title }: App) {
         {children}
         {open
           ? createPortal(
-              <Window title={title} close={handleClose}>
-                <Node open={open} close={handleClose} />
+              <Window title={title}>
+                <Node open={open} title={title} />
               </Window>,
               window.document.body,
             )

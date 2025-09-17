@@ -1,5 +1,4 @@
 'use client'
-
 import { login } from '@/app/actions/auth/login'
 import { Execute } from '@/app/actions/live/execute'
 import { getAllUsers } from '@/app/actions/users/get'
@@ -12,28 +11,27 @@ import { bootText } from './data'
 import History from './history'
 import TerminalUser, { TerminalPassword } from './terminalUser'
 import WelcomeMsg from './welcome-msg'
+import { useWindowProvider } from '../window-context'
 
 type Terminal = {
-  close: () => void
+  title: string
 }
 
-export default function Terminal({ close }: Terminal) {
+export default function Terminal({ title }: Terminal) {
   const inputRef = useRef<HTMLInputElement | null>(null)
   const [toggleState, setToggleState] = useState(0) // tracks arrowkey up/down through cmd history
   const [commandHistory, setCommandHistory] = useState<string[]>([])
   const [history, setHistory] = useState<TerminalHistory[]>([]) // System messages
   const [command, setCommand] = useState<string>('')
-
-  const [welcomeText, setWelcomeText] = useState<
-    string | (() => void)
-  >(() => {
+  const { handleCloseWindow } = useWindowProvider()
+  const [welcomeText, setWelcomeText] = useState<string | (() => void)>(() => {
     setTimeout(() => {
       Typewriter({
         setState: setWelcomeText,
         text: bootText,
         speed: 20,
       })
-    }, 2000)
+    }, 0)
   })
 
   const [auth, setAuth] = useState({
@@ -119,7 +117,7 @@ ping      Pings target host`,
           ])
         }, 1000)
       },
-      exit: () => close(),
+      exit: () => handleCloseWindow(title),
       login: () => {
         const data = command.split(' ')
         if (data.length !== 2) nedry()
@@ -159,9 +157,7 @@ ping      Pings target host`,
     }
   }
 
-  async function handleCommands(
-    event: React.KeyboardEvent<HTMLInputElement>,
-  ) {
+  async function handleCommands(event: React.KeyboardEvent<HTMLInputElement>) {
     if (event.key === 'Enter' && !auth.isAuthing) {
       setToggleState(-1)
       setHistory((prev) => [
@@ -174,9 +170,7 @@ ping      Pings target host`,
 
       const cmdVal = command.split(' ')
       const cmd =
-        commands()[
-          cmdVal[0].toLowerCase() as keyof ReturnType<typeof commands>
-        ]
+        commands()[cmdVal[0].toLowerCase() as keyof ReturnType<typeof commands>]
 
       if (cmd) {
         setCommandHistory((prev) => [...prev, command])
@@ -227,8 +221,7 @@ ping      Pings target host`,
     }
     if (event.ctrlKey && event.key === 'c') {
       setCommand('')
-      if (auth.isAuthing)
-        setAuth((prev) => ({ ...prev, isAuthing: false }))
+      if (auth.isAuthing) setAuth((prev) => ({ ...prev, isAuthing: false }))
     }
   }
 
@@ -238,7 +231,7 @@ ping      Pings target host`,
 
   return (
     <div
-      className="opacity-0 animate-fadeIn font-ubuntu text-lg flex flex-col disabled relative p-2 overflow-x-auto overflow-y-auto h-[calc(100%-40px)]"
+      className="font-ubuntu text-lg flex flex-col disabled relative p-2 overflow-x-auto overflow-y-auto h-[calc(100%-40px)]"
       style={{ scrollbarWidth: 'thin' }}
       onClick={handleFocusWindow}
     >

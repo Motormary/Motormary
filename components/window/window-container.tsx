@@ -6,12 +6,11 @@ import { cn } from '@/lib/utils'
 import { useWindowProvider } from '../window-context'
 
 type Window = {
-  close: () => void
   children: React.ReactNode
   title: string
 }
 
-export default function Window({ children, close, title }: Window) {
+export default function Window({ children, title }: Window) {
   const {
     onPointerDown,
     onPointerMove,
@@ -19,6 +18,7 @@ export default function Window({ children, close, title }: Window) {
     onOpen,
     onMaximize,
     onMinimize,
+    onClose,
   } = useWindow()
   const windowRef = useRef<HTMLDivElement>(null)
   const { getWindowState } = useWindowProvider()
@@ -42,10 +42,14 @@ export default function Window({ children, close, title }: Window) {
     onMaximize(windowRef)
   }
 
-  function handleMinimize() {
+  function handleMinimize(e: React.MouseEvent) {
+    e.stopPropagation()
     onMinimize(windowRef)
   }
 
+  function handleClose() {
+    onClose(windowRef)
+  }
   return (
     <div
       id={title}
@@ -60,7 +64,7 @@ export default function Window({ children, close, title }: Window) {
       }}
       className={cn(
         getWindowState(title)?.minimized && 'hidden',
-        'animate-appOpen absolute overflow-hidden max-w-[50rem] max-h-[80dvh] rounded-lg border border-slate-500 shadow-xl bg-primary/35 backdrop-blur-xl z-10',
+        'absolute overflow-hidden max-w-[50rem] max-h-[80dvh] rounded-lg border border-slate-500 shadow-xl bg-primary/35 backdrop-blur-xl z-10',
       )}
     >
       <div
@@ -80,7 +84,7 @@ export default function Window({ children, close, title }: Window) {
             className="cursor-pointer rounded-sm size-4 flex items-center justify-center bg-orange-600"
           />
           <button
-            onClick={close}
+            onClick={handleClose}
             className="cursor-pointer rounded-sm size-4 flex items-center justify-center bg-red-500"
           />
         </div>

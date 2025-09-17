@@ -6,6 +6,7 @@ type Window = {
   title: string
   minimized: boolean
   focused: boolean
+  open: boolean
 }
 
 type WindowContextType = {
@@ -41,10 +42,9 @@ export function WindowProvider({ children }: { children: React.ReactNode }) {
     }
   }
   function handleMinimize(title: string) {
-    if (
-      windows?.length &&
-      windows.some((win) => win.title === title && !win.minimized)
-    ) {
+    if (!windows) return
+    const selectedWindow = windows?.find((win) => win.title === title)
+    if (selectedWindow && !selectedWindow.minimized) {
       const updatedWindows = windows.reduce((acc: Window[], win) => {
         if (win.title === title) {
           win.minimized = true
@@ -55,10 +55,7 @@ export function WindowProvider({ children }: { children: React.ReactNode }) {
       }, [])
       setWindows(updatedWindows)
     } else {
-      if (
-        windows?.length &&
-        windows.some((win) => win.title === title && win.minimized)
-      ) {
+      if (selectedWindow && selectedWindow?.minimized) {
         const updatedWindows = windows.reduce((acc: Window[], win) => {
           if (win.title === title) {
             win.minimized = false

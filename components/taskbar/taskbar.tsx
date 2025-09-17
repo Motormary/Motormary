@@ -8,11 +8,11 @@ export default function Taskbar() {
       <button className="hover:bg-gray-500/10 h-full w-20">Start</button>
       <div className="w-full h-full flex items-center gap-4">
         {windows
-          ? windows?.map((window) => (
+          ? windows?.map((window, index) => (
               <button
                 onClick={() => handleMinimize(window.title)}
                 className="px-4 hover:bg-gray-500/10 h-full text-white"
-                key={window.title}
+                key={`id=${window.title}-index=${index}`}
               >
                 <span>{window.title}</span>
               </button>

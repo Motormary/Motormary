@@ -7,7 +7,7 @@ type PointerProps = {
 }
 
 export default function useWindow() {
-  const { handleMinimize } = useWindowProvider()
+  const { handleMinimize, handleCloseWindow } = useWindowProvider()
   const [offset, setOffset] = useState<{ x: number; y: number }>({
     x: 0,
     y: 0,
@@ -107,6 +107,11 @@ export default function useWindow() {
     handleMinimize(windowRef.current.id)
   }
 
+  function onClose(windowRef: React.RefObject<HTMLElement | null>) {
+    if (!windowRef.current) return
+    handleCloseWindow(windowRef.current.id)
+  }
+
   return {
     onPointerDown,
     onPointerMove,
@@ -114,5 +119,6 @@ export default function useWindow() {
     onOpen,
     onMaximize,
     onMinimize,
+    onClose,
   }
 }
