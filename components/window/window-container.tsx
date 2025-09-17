@@ -77,15 +77,15 @@ export default function Window({ children, title }: Window) {
         <div className="relative h-7 px-4 float-end z-20 flex items-end gap-4 font-mono font-bold">
           <button
             onClick={handleMinimize}
-            className="cursor-pointer rounded-sm size-4 flex items-center justify-center bg-amber-500"
+            className="cursor-pointer rounded-sm size-4 flex items-center justify-center bg-amber-500 hover:bg-amber-500/80"
           />
           <button
             onClick={handleMaximize}
-            className="cursor-pointer rounded-sm size-4 flex items-center justify-center bg-orange-600"
+            className="cursor-pointer rounded-sm size-4 flex items-center justify-center bg-orange-600 hover:bg-orange-600/80"
           />
           <button
             onClick={handleClose}
-            className="cursor-pointer rounded-sm size-4 flex items-center justify-center bg-red-500"
+            className="cursor-pointer rounded-sm size-4 flex items-center justify-center bg-red-500 hover:bg-red-500/80"
           />
         </div>
       </div>
