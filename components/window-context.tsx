@@ -15,11 +15,12 @@ type WindowContextType = {
   handleCloseWindow: (title: string) => void
   handleMinimize: (title: string) => void
   getWindowState: (title: string) => Window | undefined
+  handleFocusWindow: (title: string) => void
 }
 
 const WindowContext = createContext<WindowContextType | undefined>(undefined)
 
-export function useWindowProvider() {
+export function useWindowProvider(): WindowContextType {
   const context = useContext(WindowContext)
   if (!context) {
     throw new Error('useWindows must be used within a WindowProvider')
@@ -30,18 +31,18 @@ export function useWindowProvider() {
 export function WindowProvider({ children }: { children: React.ReactNode }) {
   const [windows, setWindows] = useState<Window[] | null>(null)
 
-  function handleOpenWindow(window: Window) {
+  function handleOpenWindow(window: Window): void {
     if (windows?.length) {
       setWindows([...windows, window])
     } else setWindows([window])
   }
-  function handleCloseWindow(title: string) {
+  function handleCloseWindow(title: string): void {
     if (windows?.length && windows.some((win) => win.title === title)) {
       const newWindows = removeFromArray(windows, title)
       setWindows(newWindows.length ? newWindows : null)
     }
   }
-  function handleMinimize(title: string) {
+  function handleMinimize(title: string): void {
     if (!windows) return
     const selectedWindow = windows?.find((win) => win.title === title)
     if (selectedWindow && !selectedWindow.minimized) {
@@ -65,13 +66,26 @@ export function WindowProvider({ children }: { children: React.ReactNode }) {
           return acc
         }, [])
         setWindows(updatedWindows)
-      } else {
       }
     }
   }
 
-  function getWindowState(title: string) {
+  function getWindowState(title: string): Window | undefined {
     return windows?.find((win) => win.title === title)
+  }
+
+  function handleFocusWindow(title: string): void {
+    if (!windows) return
+    const updatedWindows = windows.reduce((acc: Window[], win) => {
+      if (win.title === title) {
+        win.focused = true
+      } else {
+        win.focused = false
+      }
+      acc.push(win)
+      return acc
+    }, [])
+    setWindows(updatedWindows)
   }
 
   return (
@@ -82,6 +96,7 @@ export function WindowProvider({ children }: { children: React.ReactNode }) {
         handleCloseWindow,
         handleMinimize,
         getWindowState,
+        handleFocusWindow,
       }}
     >
       {children}
@@ -89,6 +104,6 @@ export function WindowProvider({ children }: { children: React.ReactNode }) {
   )
 }
 
-function removeFromArray(array: Window[], val: string) {
+function removeFromArray(array: Window[], val: string): Window[] {
   return array.filter((arr) => arr.title !== val)
 }

@@ -7,7 +7,8 @@ type PointerProps = {
 }
 
 export default function useWindow() {
-  const { handleMinimize, handleCloseWindow } = useWindowProvider()
+  const { handleMinimize, handleCloseWindow, handleFocusWindow } =
+    useWindowProvider()
   const [offset, setOffset] = useState<{ x: number; y: number }>({
     x: 0,
     y: 0,
@@ -21,11 +22,14 @@ export default function useWindow() {
   })
   const [isMax, setIsMax] = useState(false)
 
+  function onFocus(windowRef: React.RefObject<HTMLElement | null>) {
+    if (!windowRef.current) return
+    handleFocusWindow(windowRef.current.id)
+  }
   function onPointerDown({ event, windowRef }: PointerProps) {
     if (!windowRef.current || isMax) return
 
     const rect = windowRef.current.getBoundingClientRect()
-    windowRef.current.style.zIndex = '9999'
 
     // Offset between mouse click and window top-left
     const offsetX = event.clientX - rect.left
@@ -61,7 +65,6 @@ export default function useWindow() {
 
   function onPointerUp({ event, windowRef }: PointerProps) {
     if (!windowRef.current) return
-    windowRef.current.style.zIndex = '10'
     setDragging(false)
     ;(event.target as HTMLElement).releasePointerCapture(event.pointerId)
   }
@@ -120,5 +123,6 @@ export default function useWindow() {
     onMaximize,
     onMinimize,
     onClose,
+    onFocus,
   }
 }

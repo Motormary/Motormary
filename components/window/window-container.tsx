@@ -19,6 +19,7 @@ export default function Window({ children, title }: Window) {
     onMaximize,
     onMinimize,
     onClose,
+    onFocus,
   } = useWindow()
   const windowRef = useRef<HTMLDivElement>(null)
   const { getWindowState } = useWindowProvider()
@@ -50,6 +51,11 @@ export default function Window({ children, title }: Window) {
   function handleClose() {
     onClose(windowRef)
   }
+  function handleFocus() {
+    if (!getWindowState(title)?.focused) {
+      onFocus(windowRef)
+    }
+  }
   return (
     <div
       id={title}
@@ -64,8 +70,10 @@ export default function Window({ children, title }: Window) {
       }}
       className={cn(
         getWindowState(title)?.minimized && 'hidden',
-        'absolute overflow-hidden max-w-[50rem] max-h-[80dvh] rounded-lg border border-slate-500 shadow-xl bg-primary/35 backdrop-blur-xl z-10',
+        getWindowState(title)?.focused ? 'z-20' : 'z-10',
+        'absolute overflow-hidden max-w-[50rem] max-h-[80dvh] rounded-lg border border-slate-500 shadow-xl bg-primary/35 backdrop-blur-xl',
       )}
+      onMouseOver={handleFocus}
     >
       <div
         onDoubleClick={handleMaximize}
