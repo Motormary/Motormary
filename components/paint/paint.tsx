@@ -99,10 +99,10 @@ export default function PaintCanvas({ open }: { open: boolean }) {
         height={1080}
         width={1920}
         className="w-full h-full bg-white"
-        onMouseDown={startDrawing}
-        onMouseUp={finishDrawing}
-        onMouseMove={draw}
-        onMouseLeave={finishDrawing}
+        onPointerDown={startDrawing}
+        onPointerUp={finishDrawing}
+        onPointerMove={draw}
+        onPointerLeave={finishDrawing}
       />
     </div>
   )
