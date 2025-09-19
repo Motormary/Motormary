@@ -34,7 +34,7 @@ export default function ImgConverter() {
   const [items, setItems] = useState<Items[] | null>(null)
   const [formData, setFormData] = useState<Convert>({
     quality: 75,
-    resize: 0,
+    resize: 100,
     strip: false,
   })
   const [resizePx, setResizePx] = useState(false)
@@ -57,10 +57,9 @@ export default function ImgConverter() {
     const invalidItems = Array.from(event.dataTransfer.items).filter(
       (item) => !validFileType(item),
     )
-    if (invalidItems.length)
-      alert(
-        'One or more files had an invalid format and will be discarded',
-      )
+    if (invalidItems.length) {
+      alert('One or more files had an invalid format and will be discarded')
+    }
     const newItems = Array.from(event.dataTransfer.items)
       .filter((item) => validFileType(item))
       .map((item) => ({
@@ -177,9 +176,7 @@ export default function ImgConverter() {
                   />
                 </picture>
                 <div>
-                  <p className="text-gray-200 max-w-20 truncate">
-                    {item.alt}
-                  </p>
+                  <p className="text-gray-200 max-w-20 truncate">{item.alt}</p>
                   <p className="text-sm text-gray-400">{item.size}</p>
                 </div>
               </li>
@@ -187,9 +184,7 @@ export default function ImgConverter() {
           </ul>
         ) : (
           <>
-            <p className="text-center">
-              Select or drop images here...
-            </p>
+            <p className="text-center">Select or drop images here...</p>
             <p className="text-sm text-gray-400 text-center">
               .png, .jpg, .jpeg, .webp
             </p>
@@ -211,10 +206,7 @@ export default function ImgConverter() {
         max={100}
       />
       <div className="grid grid-cols-[repeat(auto-fit,_minmax(210px,_1fr))] gap-4 w-full py-2">
-        <label
-          htmlFor="resize"
-          className="max-w-52 flex flex-col gap-1"
-        >
+        <label htmlFor="resize" className="max-w-52 flex flex-col gap-1">
           <div className="flex gap-4">
             <span>Resize</span>
             <div className="flex items-center gap-1">
@@ -262,10 +254,7 @@ export default function ImgConverter() {
             {resizePx ? <span>px</span> : null}
           </div>
         </label>
-        <label
-          htmlFor="quality"
-          className="max-w-52 flex flex-col gap-1"
-        >
+        <label htmlFor="quality" className="max-w-52 flex flex-col gap-1">
           <span>Quality %</span>
           <div className="flex gap-1">
             <Slider
@@ -312,12 +301,7 @@ export default function ImgConverter() {
               '[grid-area:stack]',
             )}
           />
-          <span
-            className={cn(
-              isPending && 'opacity-0',
-              '[grid-area:stack]',
-            )}
-          >
+          <span className={cn(isPending && 'opacity-0', '[grid-area:stack]')}>
             Convert
           </span>
         </div>

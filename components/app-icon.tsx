@@ -25,7 +25,7 @@ export default function App({ Node, children, title }: App) {
     if (open) return
     console.log('open')
     handleOpenWindow({
-      focused: false,
+      focused: true,
       icon: children,
       minimized: false,
       title,

@@ -60,6 +60,8 @@ export default function Window({ children, title }: Window) {
     <div
       id={title}
       onAnimationEnd={handleOpen}
+      onFocusCapture={handleFocus}
+      onClick={handleFocus}
       ref={windowRef}
       style={{
         height: '100dvh',
@@ -71,9 +73,8 @@ export default function Window({ children, title }: Window) {
       className={cn(
         getWindowState(title)?.minimized && 'hidden',
         getWindowState(title)?.focused ? 'z-20' : 'z-10',
-        'absolute overflow-hidden max-w-[50rem] max-h-[80dvh] rounded-lg border border-slate-500 shadow-xl bg-primary/35 backdrop-blur-xl',
+        'absolute overflow-hidden max-w-[50rem] max-h-[80dvh] rounded-lg border border-slate-500 shadow-xl bg-primary/50 backdrop-blur-xl',
       )}
-      onMouseOver={handleFocus}
     >
       <div
         onDoubleClick={handleMaximize}

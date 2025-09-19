@@ -33,7 +33,12 @@ export function WindowProvider({ children }: { children: React.ReactNode }) {
 
   function handleOpenWindow(window: Window): void {
     if (windows?.length) {
-      setWindows([...windows, window])
+      const newWindows = windows.reduce((acc: Window[], win) => {
+        win.focused = false
+        acc.push(win)
+        return acc
+      }, [])
+      setWindows([...newWindows, window])
     } else setWindows([window])
   }
   function handleCloseWindow(title: string): void {
