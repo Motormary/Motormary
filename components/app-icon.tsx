@@ -12,18 +12,13 @@ type App = {
 }
 
 export default function App({ Node, children, title }: App) {
-  const {
-    handleOpenWindow,
-    handleCloseWindow,
-    getWindowState,
-    handleMinimize,
-  } = useWindowProvider()
+  const { handleOpenWindow, getWindowState, handleMinimize } =
+    useWindowProvider()
   const open = getWindowState(title)?.open
 
   function handleSetOpen() {
     if (open && getWindowState(title)?.minimized) handleMinimize(title)
     if (open) return
-    console.log('open')
     handleOpenWindow({
       focused: true,
       icon: children,
@@ -31,11 +26,6 @@ export default function App({ Node, children, title }: App) {
       title,
       open: true,
     })
-  }
-
-  function handleClose() {
-    console.log('closed')
-    handleCloseWindow(title)
   }
 
   return (
