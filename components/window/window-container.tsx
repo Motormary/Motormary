@@ -81,9 +81,12 @@ export default function Window({ children, title }: Window) {
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
-        className="w-full h-10 border-b border-slate-500"
+        className="w-full h-10 border-b flex justify-between border-slate-500"
       >
-        <div className="relative h-7 px-4 float-end z-20 flex items-end gap-4 font-mono font-bold">
+        <div className="h-full place-content-center px-4">
+          <p className="select-none font-bold text-white/90">{title}</p>
+        </div>
+        <div className="relative h-7 px-4 z-20 flex items-end gap-4 font-mono font-bold">
           <button
             onClick={handleMinimize}
             className="cursor-pointer rounded-sm size-4 flex items-center justify-center bg-amber-500 hover:bg-amber-500/80"

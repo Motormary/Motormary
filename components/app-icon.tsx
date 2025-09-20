@@ -1,7 +1,7 @@
 'use client'
 
 import { createPortal } from 'react-dom'
-import React, { useState } from 'react'
+import React from 'react'
 import Window from './window/window-container'
 import { useWindowProvider } from './window-context'
 
@@ -16,7 +16,8 @@ export default function App({ Node, children, title }: App) {
     useWindowProvider()
   const open = getWindowState(title)?.open
 
-  function handleSetOpen() {
+  function handleSetOpen(e: React.MouseEvent) {
+    e.stopPropagation()
     if (open && getWindowState(title)?.minimized) handleMinimize(title)
     if (open) return
     handleOpenWindow({
