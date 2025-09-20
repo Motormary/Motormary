@@ -6,8 +6,10 @@ import PaintIcon from '@/components/paint/paint-icon'
 import Taskbar from '@/components/taskbar/taskbar'
 import Terminal from '@/components/terminal/terminal'
 import TerminalIcon from '@/components/terminal/terminal-icon'
+import { ImgFolder } from '@/lib/folder/folder'
+import FolderIcon from '@/lib/folder/folder-icon'
 
-export default async function Home() {
+export default function Home() {
   return (
     <main className="h-[100dvh] w-full grid gap-2 grid-rows-[repeat(auto-fill,minmax(80px,1fr))] p-4 relative overflow-hidden">
       <App title="Terminal" Node={Terminal}>
@@ -18,6 +20,9 @@ export default async function Home() {
       </App>
       <App title="Bob Ross" Node={Paint}>
         <PaintIcon />
+      </App>
+      <App title="Images" Node={ImgFolder}>
+        <FolderIcon />
       </App>
       <Taskbar />
     </main>

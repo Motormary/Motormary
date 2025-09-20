@@ -4,16 +4,14 @@ import 'server-only'
 import { cookies } from 'next/headers'
 import { cache } from 'react'
 
-export async function setSession(
-  setCookieHeader: string | null = '',
-) {
+export async function setSession(setCookieHeader: string | null = '') {
   if (setCookieHeader) {
     const cookie = await cookies()
     const sessionCookie = setCookieHeader.split(';')[0].split('=')
 
     try {
       cookie.set(sessionCookie[0], sessionCookie[1], {
-        secure: true,
+        secure: process.env.NODE_ENV === 'production' ? true : false,
         httpOnly: true,
         sameSite: 'lax',
       })
