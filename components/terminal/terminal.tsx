@@ -5,7 +5,6 @@ import { getAllUsers } from '@/app/actions/users/get'
 import { Typewriter } from '@/lib/client-utils'
 import { TerminalHistory } from '@/lib/definitions'
 import React, { useRef, useState, useTransition } from 'react'
-import nedry from './ah-ah-ah'
 import { copyContentGrid, copyCssReset } from './command-list'
 import { bootText } from './data'
 import History from './history'
@@ -75,7 +74,6 @@ ping      Pings target host`,
             ...prev,
             { type: 'system', value: 'Unauthorized access' },
           ])
-          nedry()
         }
       },
       log: () =>
@@ -120,7 +118,7 @@ ping      Pings target host`,
       exit: () => handleCloseWindow(title),
       login: () => {
         const data = command.split(' ')
-        if (data.length !== 2) nedry()
+        if (data.length !== 2) return
         else {
           setAuth((prev) => ({ ...prev, isAuthing: true }))
           setFormdata({ username: data[1], password: '' })
@@ -192,7 +190,6 @@ ping      Pings target host`,
       setAuth((prev) => ({ ...prev, isAuthing: false }))
       startTransition(async () => {
         const res = await login(formdata)
-        if (!res.success) return nedry()
         setHistory((prev) => [
           ...prev,
           {
@@ -200,8 +197,10 @@ ping      Pings target host`,
             value: res.success ? 'Success' : 'Failed',
           },
         ])
-        setAuth((prev) => ({ ...prev, hasAuth: true }))
         setFormdata({ username: '', password: '' })
+        if (res.success) {
+          setAuth((prev) => ({ ...prev, hasAuth: true }))
+        }
       })
     }
 
