@@ -75,7 +75,6 @@ export default function useWindow() {
     el.style.minWidth = '250px'
     el.style.minHeight = '250px'
     el.style.resize = 'both'
-    el.classList.remove('animate-appOpen')
   }
 
   function onMaximize(windowRef: React.RefObject<HTMLElement | null>) {
