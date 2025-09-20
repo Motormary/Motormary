@@ -54,7 +54,7 @@ export default function useWindow() {
       newY < 0 ||
       newX > window.innerWidth - 10 ||
       newX < -rect.width + 10 ||
-      newY > window.innerHeight - 10
+      newY > window.innerHeight - 66
     )
       return
 
