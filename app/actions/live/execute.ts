@@ -32,8 +32,8 @@ export async function Execute(command: string) {
   
   try {
     const { stdout, stderr } = await execAsync(cmd, {
-      timeout: 5000,
-      maxBuffer: 1024 * 1024,
+      timeout: 10000,
+      maxBuffer: 10 * 1024 * 1024,
     })
     return { stdout, stderr }
   } catch (error) {
