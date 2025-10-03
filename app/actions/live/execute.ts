@@ -16,6 +16,7 @@ const allowedCommands = [
   'free',
   'lscpu',
   'help',
+  'docker',
 ]
 
 export async function Execute(command: string) {
