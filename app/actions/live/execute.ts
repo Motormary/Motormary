@@ -19,7 +19,8 @@ const allowedCommands = [
   'docker',
   'who', 
   'last', 
-  'shutdown'
+  'shutdown', 
+  'echo' 
 ]
 
 export async function Execute(command: string) {
