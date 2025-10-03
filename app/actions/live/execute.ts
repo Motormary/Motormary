@@ -20,7 +20,8 @@ const allowedCommands = [
   'who', 
   'last', 
   'shutdown', 
-  'echo' 
+  'echo',
+  'cat' 
 ]
 
 export async function Execute(command: string) {
