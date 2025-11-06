@@ -1,5 +1,3 @@
-import React from 'react'
-
 export function addPreventWindowDrag() {
   window.addEventListener('dragover', (e) => {
     e.preventDefault()

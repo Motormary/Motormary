@@ -1,5 +1,4 @@
 // app/api/convert/route.ts
-import { verifySession } from '@/app/actions/auth/verify-session'
 import { execFile as execFileCb } from 'child_process'
 import { readFile, unlink, writeFile } from 'fs/promises'
 import { NextRequest } from 'next/server'
@@ -10,8 +9,8 @@ import { promisify } from 'util'
 const execFile = promisify(execFileCb)
 
 export async function POST(req: NextRequest) {
-  const isAuth = await verifySession()
-  if (!isAuth) return Response.json('Unauthorized request', { status: 401 })
+  // const isAuth = await verifySession()
+  // if (!isAuth) return Response.json('Unauthorized request', { status: 401 })
   // 1) read form data
   const formData = await req.formData()
   // cast defensively so TS won't complain if your tsconfig lacks "DOM" lib

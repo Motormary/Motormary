@@ -141,6 +141,7 @@ export default function ImgConverter() {
       const zipBlob = await zip.generateAsync({ type: 'blob' })
       saveAs(zipBlob, 'converted-files.zip')
       setProgress(0)
+      setItems(null)
     })
   }
 
