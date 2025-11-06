@@ -11,8 +11,7 @@ const execFile = promisify(execFileCb)
 
 export async function POST(req: NextRequest) {
   const isAuth = await verifySession()
-  if (!isAuth)
-    return Response.json('Unauthorized request', { status: 401 })
+  if (!isAuth) return Response.json('Unauthorized request', { status: 401 })
   // 1) read form data
   const formData = await req.formData()
   // cast defensively so TS won't complain if your tsconfig lacks "DOM" lib
@@ -22,13 +21,10 @@ export async function POST(req: NextRequest) {
   const strip = formData.get('strip') === 'true'
 
   if (!file || typeof (file as any).name !== 'string') {
-    return new Response(
-      JSON.stringify({ error: 'No file received' }),
-      {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' },
-      },
-    )
+    return new Response(JSON.stringify({ error: 'No file received' }), {
+      status: 400,
+      headers: { 'Content-Type': 'application/json' },
+    })
   }
 
   // 2) write input temp file (unique name to avoid collisions)
@@ -36,15 +32,9 @@ export async function POST(req: NextRequest) {
   const fileType = file.type.split('/')[1]
   const parsed = path.parse(originalName)
   const stamp = Date.now()
-  const tmpIn = path.join(
-    os.tmpdir(),
-    `${parsed.name}-${stamp}${parsed.ext}`,
-  )
+  const tmpIn = path.join(os.tmpdir(), `${parsed.name}-${stamp}${parsed.ext}`)
   // ensure we write a .jpg output (change if you want dynamic output format)
-  const tmpOut = path.join(
-    os.tmpdir(),
-    `${parsed.name}-${stamp}.${fileType}`,
-  )
+  const tmpOut = path.join(os.tmpdir(), `${parsed.name}-${stamp}.${fileType}`)
 
   const inputBuffer = Buffer.from(await file.arrayBuffer())
   await writeFile(tmpIn, inputBuffer)
@@ -58,11 +48,7 @@ export async function POST(req: NextRequest) {
 
   try {
     // 4) run ImageMagick. try `magick` (v7) and fallback to `convert` (v6)
-    try {
-      await execFile('convert', imArgs)
-    } catch (err: any) {
-      throw err
-    }
+    await execFile('convert', imArgs)
 
     // 5) read output and return as binary response
     const outputBuffer = await readFile(tmpOut)
