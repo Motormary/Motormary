@@ -1,6 +1,5 @@
 'use client'
 import { login } from '@/app/actions/auth/login'
-import { Execute } from '@/app/actions/live/execute'
 import { getAllUsers } from '@/app/actions/users/get'
 import { Typewriter } from '@/lib/client-utils'
 import { TerminalHistory } from '@/lib/definitions'
@@ -52,7 +51,6 @@ export default function Terminal({ title }: Terminal) {
             type: 'system',
             value: `help      Show available commands
 clear     Clears screen history
-sudo      Gain access to root
 log       Prints command history
 exit      Closes terminal window
 ping      Pings target host`,
@@ -61,20 +59,6 @@ ping      Pings target host`,
       clear: () => {
         setHistory([])
         setWelcomeText('')
-      },
-      sudo: async () => {
-        try {
-          const { stdout, stderr } = await Execute(command)
-          setHistory((prev) => [
-            ...prev,
-            { type: 'system', value: stdout ?? `${stderr}` },
-          ])
-        } catch (e) {
-          setHistory((prev) => [
-            ...prev,
-            { type: 'system', value: 'Unauthorized access' },
-          ])
-        }
       },
       log: () =>
         setHistory((prev) =>
