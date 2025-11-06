@@ -1,4 +1,3 @@
-'use server'
 import { exec } from 'child_process'
 import 'server-only'
 import util from 'util'
@@ -17,14 +16,14 @@ const allowedCommands = [
   'lscpu',
   'help',
   'docker',
-  'who', 
-  'last', 
-  'shutdown', 
+  'who',
+  'last',
+  'shutdown',
   'echo',
-  'cat' 
+  'cat',
 ]
 
-export async function Execute(command: string) {
+async function Execute(command: string) {
   const cmd = command.replace('sudo ', '')
   const isAllowed = allowedCommands.some(
     (allowed) => allowed === cmd.split(' ')[0],
@@ -33,8 +32,9 @@ export async function Execute(command: string) {
   if (!session || !isAllowed)
     return { stdout: null, stderr: `Command not found ${command}` }
 
-  if (cmd == 'help') return {stderr: null, stdout: JSON.stringify(allowedCommands, null, 2)}
-  
+  if (cmd == 'help')
+    return { stderr: null, stdout: JSON.stringify(allowedCommands, null, 2) }
+
   try {
     const { stdout, stderr } = await execAsync(cmd, {
       timeout: 10000,
