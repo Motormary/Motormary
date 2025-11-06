@@ -59,12 +59,13 @@ export default function Window({ children, title }: Window) {
   return (
     <div
       id={title}
+      onAnimationEnd={handleOpen}
       onFocusCapture={handleFocus}
       onClick={handleFocus}
       ref={windowRef}
       style={{
-        height: '100dvh',
-        width: '94%',
+        height: '100svh',
+        width: '99%',
         top: `50%`,
         left: `50%`,
         transform: `translateY(-50%) translateX(-50%)`,
@@ -72,7 +73,7 @@ export default function Window({ children, title }: Window) {
       className={cn(
         getWindowState(title)?.minimized && 'hidden',
         getWindowState(title)?.focused ? 'z-20' : 'z-10',
-        'absolute overflow-hidden max-w-[50rem] max-h-[80dvh] min-w-64 min-h-64 resize rounded-lg border border-slate-500 shadow-xl bg-primary/50 backdrop-blur-xl',
+        'absolute overflow-hidden max-w-[50rem] max-h-[80dvh] min-w-64 min-h-64 resize border border-slate-500 shadow-xl bg-black/50 backdrop-blur-xl',
       )}
     >
       <div

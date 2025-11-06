@@ -1,5 +1,4 @@
 export const bootText = `Welcome to Skyen
-\nWIP - This page will be updated every day
 \nType help to see commands`
 
 export const contentGrid = `/* prettier-ignore */
@@ -88,3 +87,4 @@ sudo      Gain access to root
 log       Prints command history
 exit      Closes terminal window
 ping      Pings target host`
+

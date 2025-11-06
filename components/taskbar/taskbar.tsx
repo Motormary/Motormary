@@ -8,11 +8,11 @@ export default function Taskbar() {
   const { windows, handleMinimize, handleCloseWindow } = useWindowProvider()
   return (
     <div
-      className="w-screen h-14 bg-gray-900 fixed bottom-0 left-0 overflow-hidden overflow-x-auto font-ubuntu flex items-center justify-between z-50"
+      className="w-screen h-14 bg-primary-foreground fixed bottom-0 left-0 overflow-hidden overflow-x-auto font-ubuntu flex items-center justify-between z-50"
       style={{ scrollbarWidth: 'thin' }}
     >
       <div className="flex items-center h-full">
-        <button className="hover:bg-gray-500/10 h-full min-w-20">Start</button>
+        {/* <button className="hover:bg-gray-500/10 h-full min-w-20">Start</button> */}
         <div className="w-full h-full flex items-center">
           {windows
             ? windows?.map((window, index) => (

@@ -33,7 +33,7 @@ export default function App({ Node, children, title }: App) {
     <button
       key={`icon-${title}`}
       onClick={handleSetOpen}
-      className="max-w-20 p-1 group"
+      className="max-w-20 p-1 group outline-none focus-visible:ring rounded-lg ring-green-400 transition-all ring-offset-2 ring-offset-transparent"
     >
       <>
         {children}
