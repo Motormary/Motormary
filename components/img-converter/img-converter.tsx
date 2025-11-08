@@ -250,7 +250,7 @@ export default function ImgConverter() {
               name="resize"
               className="max-w-13 text-center"
               max={100}
-              maxLength={3}
+              maxLength={4}
             />
             {resizePx ? <span>px</span> : null}
           </div>

@@ -31,7 +31,7 @@ export default function Taskbar() {
                     )}
                   />
                   <X
-                    className="group-hover:opacity-100 group-focus-visible:opacity-100 opacity-0 size-4 cursor-pointer"
+                    className="group-hover:opacity-100 group-focus-visible:opacity-100 opacity-100 sm:opacity-0 size-4 cursor-pointer"
                     onClick={(e) => {
                       e.preventDefault()
                       e.stopPropagation()
