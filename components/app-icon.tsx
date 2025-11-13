@@ -51,7 +51,7 @@ export default function App({ Node, children, title }: App) {
   )
 }
 
-export function DefaultIcon({ children }: { children: React.ReactNode }) {
+export function IconContainer({ children }: { children: React.ReactNode }) {
   return (
     <div className="bg-black mx-auto size-14 rounded-md border-2 border-slate-500 group-hover:border-slate-400 focus:outline outline-slate-300 font-mono flex items-center justify-center overflow-hidden">
       {children}

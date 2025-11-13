@@ -1,11 +1,9 @@
 import App from '@/components/app-icon'
 import ConverterIcon from '@/components/img-converter/converter-icon'
 import ImgConverter from '@/components/img-converter/img-converter'
-import Taskbar from '@/components/taskbar/taskbar'
+import KanbanIcon from '@/components/kanban/icon'
 import Terminal from '@/components/terminal/terminal'
 import TerminalIcon from '@/components/terminal/terminal-icon'
-import { ImgFolder } from '@/lib/folder/folder'
-import FolderIcon from '@/lib/folder/folder-icon'
 
 export default function Home() {
   return (
@@ -16,10 +14,10 @@ export default function Home() {
       <App title="Magick" Node={ImgConverter}>
         <ConverterIcon />
       </App>
-      <App title="Images" Node={ImgFolder}>
-        <FolderIcon />
-      </App>
-      <Taskbar />
+      <KanbanIcon />
+      {/* <App title="Images" Node={ImgFolder}> */}
+      {/*   <FolderIcon /> */}
+      {/* </App> */}
     </main>
   )
 }
